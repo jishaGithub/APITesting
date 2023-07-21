@@ -15,6 +15,6 @@ public class UnsplashAPIGetTopics extends UnsplashAPI {
     public Response getTopics(int pageCount) {
         addUrlParameter("page", String.valueOf(pageCount));
         setHeader("Authorization", "Client-ID " + API_KEY);
-        return callAPI();
+        return callAPIExpectSuccess();
     }
 }

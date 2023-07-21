@@ -18,6 +18,6 @@ public class UnsplashAPIGetPhotos extends UnsplashAPI {
         addUrlParameter("query", query);
         addUrlParameter("per-page", String.valueOf(perPage));
         setHeader("Authorization", "Client-ID " + API_KEY);
-        return callAPI();
+        return callAPIExpectSuccess();
     }
 }
