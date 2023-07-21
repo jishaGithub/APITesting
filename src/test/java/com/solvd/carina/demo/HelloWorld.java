@@ -10,7 +10,7 @@ import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 
 /**
- * This is Hello World carina-demo tests.
+ * This is Hello World carina-demo apitests.
  *
  * @author qpsdemo
  */

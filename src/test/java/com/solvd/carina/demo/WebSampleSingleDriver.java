@@ -42,7 +42,7 @@ public class WebSampleSingleDriver implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Home page is not opened");
     }
 
-    @Test(dependsOnMethods="testOpenPage") //for dependent tests Carina keeps driver sessions by default
+    @Test(dependsOnMethods="testOpenPage") //for dependent apitests Carina keeps driver sessions by default
     @MethodOwner(owner = "qpsdemo")
     @TestLabel(name = "feature", value = {"web", "regression"})
     public void testOpenCompare() {
@@ -54,7 +54,7 @@ public class WebSampleSingleDriver implements IAbstractTest {
         comparePage.isPageOpened();
     }
 
-    @Test(dependsOnMethods="testOpenCompare") //for dependent tests Carina keeps driver sessions by default
+    @Test(dependsOnMethods="testOpenCompare") //for dependent apitests Carina keeps driver sessions by default
     @MethodOwner(owner = "qpsdemo")
     @TestLabel(name = "feature", value = {"web", "regression"})
     public void testReadSpecs() {
@@ -62,7 +62,7 @@ public class WebSampleSingleDriver implements IAbstractTest {
         specs = comparePage.compareModels("Samsung Galaxy J3", "Samsung Galaxy J5", "Samsung Galaxy J7 Pro");
     }
 
-    @Test(dependsOnMethods="testReadSpecs") //for dependent tests Carina keeps driver sessions by default
+    @Test(dependsOnMethods="testReadSpecs") //for dependent apitests Carina keeps driver sessions by default
     @MethodOwner(owner = "qpsdemo")
     @TestLabel(name = "feature", value = {"web", "acceptance"})
     public void testCompareModels() {

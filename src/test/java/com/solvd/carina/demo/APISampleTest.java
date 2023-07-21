@@ -20,7 +20,7 @@ import com.zebrunner.carina.core.registrar.tag.Priority;
 import com.zebrunner.carina.core.registrar.tag.TestPriority;
 
 /**
- * This sample shows how create REST API tests.
+ * This sample shows how create REST API apitests.
  *
  * @author qpsdemo
  */

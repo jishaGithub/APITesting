@@ -7,7 +7,7 @@ import com.zebrunner.carina.core.IAbstractTest;
 import com.zebrunner.carina.utils.R;
 
 /**
- * This sample shows how use Crypto in tests.
+ * This sample shows how use Crypto in apitests.
  *
  * @author qpsdemo
  */

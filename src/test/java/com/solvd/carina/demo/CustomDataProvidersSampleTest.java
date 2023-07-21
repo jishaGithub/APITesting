@@ -45,7 +45,7 @@ public class CustomDataProvidersSampleTest implements IAbstractTest, IAbstractDa
     /**
      * Parametrization using external xls/xlsx:
      * <br>
-     * Every row in spreadsheet provides tests arguments set for 1 test.
+     * Every row in spreadsheet provides apitests arguments set for 1 test.
      * <p>{@link XlsDataSourceParameters} annotation should contain:</p>
      *  <ul>
      *      <li>path - xls/xlsx file path located in src/test/resources
@@ -70,7 +70,7 @@ public class CustomDataProvidersSampleTest implements IAbstractTest, IAbstractDa
     /**
      * Parametrization using external csv:
      * <br>
-     * Every row in table provides tests arguments set for 1 test.
+     * Every row in table provides apitests arguments set for 1 test.
      * <p>{@link CsvDataSourceParameters} annotation should contain:</p>
      *  <ul>
      *      <li>path - csv file path located in src/test/resources
@@ -94,7 +94,7 @@ public class CustomDataProvidersSampleTest implements IAbstractTest, IAbstractDa
     /**
      * Parametrization using external xls/xlsx:
      * <br>
-     * Every row in spreadsheet provides tests arguments as Map&lt;String, String&gt; for 1 test.
+     * Every row in spreadsheet provides apitests arguments as Map&lt;String, String&gt; for 1 test.
      * <p>
      * For datasets with huge number of columns just remove dsArgs parameter to return whole row as single map object
      * </p>
@@ -114,7 +114,7 @@ public class CustomDataProvidersSampleTest implements IAbstractTest, IAbstractDa
      * Grouped parametrization using external csv:
      * <p>
      * Every row in table being grouped by value from
-     * selected groupColumn and provides tests arguments as List&lt;Map&lt;String, String&gt;&gt; for 1 test.
+     * selected groupColumn and provides apitests arguments as List&lt;Map&lt;String, String&gt;&gt; for 1 test.
      * </p>
      * <ul>
      *      <li>List includes all rows that were grouped by unique value

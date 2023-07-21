@@ -20,7 +20,7 @@ import com.zebrunner.carina.webdriver.core.capability.impl.desktop.ChromeCapabil
 import com.zebrunner.carina.webdriver.core.capability.impl.desktop.FirefoxCapabilities;
 
 /**
- * This sample shows how initialize multiple drivers and run the tests on different browsers.
+ * This sample shows how initialize multiple drivers and run the apitests on different browsers.
  *
  * @author qpsdemo
  */
