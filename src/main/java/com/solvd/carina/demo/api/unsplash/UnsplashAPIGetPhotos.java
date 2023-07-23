@@ -7,7 +7,6 @@ import io.restassured.response.Response;
 
 @Endpoint(url = "${base_url}/search/photos", methodType = HttpMethodType.GET)
 @SuccessfulHttpStatus(status = HttpResponseStatusType.OK_200)
-@ResponseTemplatePath(path = "api/unsplash/response.schema")
 public class UnsplashAPIGetPhotos extends UnsplashAPI {
 
     public UnsplashAPIGetPhotos() {
