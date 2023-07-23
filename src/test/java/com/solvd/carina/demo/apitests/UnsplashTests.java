@@ -22,7 +22,7 @@ public class UnsplashTests {
     @MethodOwner(owner = "jisha")
     public void validateEaglePhotosWithUserInfo() {
         String searchTerm = "eagle";
-        int photoPerPage = 10;
+        int photoPerPage = 8;
         int totalPhotos = 20;
         UnsplashAPIGetPhotos unsplashAPIGetPhotos = new UnsplashAPIGetPhotos();
         List<Map<String, Object>> allPhotosFromResponse = new ArrayList<>();
@@ -34,13 +34,14 @@ public class UnsplashTests {
             assertNotNull(responseResults);
             allPhotosFromResponse.addAll(responseResults);
         }
-        assertEquals(allPhotosFromResponse.size(), totalPhotos);
+        LOGGER.info(String.valueOf(allPhotosFromResponse.size()+" photos retrieved successfully!"));
+        assertEquals(allPhotosFromResponse.size(), totalPhotos, totalPhotos+" photos are not included in the response");
         for (Map<String, Object> photoData : allPhotosFromResponse) {
             Map<String, Object> userData = (Map<String, Object>) photoData.get("user");
-            assertNotNull(userData.get("id"));
-            assertNotNull(userData.get("username"));
+            assertNotNull(userData.get("id"),"id is null");
+            assertNotNull(userData.get("username"),"user name is null");
             Map<String, String> linksData = (Map<String, String>) userData.get("links");
-            assertNotNull(linksData.get("html"));
+            assertNotNull(linksData.get("html"),"html is null");
         }
         LOGGER.info("testSearchEaglePhotosWithUserInfo completed successfully.");
     }
