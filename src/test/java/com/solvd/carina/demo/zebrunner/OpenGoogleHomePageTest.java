@@ -12,20 +12,17 @@ public class OpenGoogleHomePageTest implements IAbstractTest {
     @TestLabel(name = "feature", value = "web")
     public void testOpenGoogleHomePage() {
 
-        GoogleHomePage googleHomePage = initPage(getDriver(), GoogleHomePage.class);
-
+        GoogleHomePage googleHomePage = new GoogleHomePage(getDriver());
         googleHomePage.open();
-
         Assert.assertTrue(googleHomePage.isPageOpened(), "Google homepage is not opened!");
+        System.out.println(googleHomePage.getTitle());
+
 
         /*
-
         I used the below command to start selenium in terminal. I changed the version of selenium-server from -4.8.1 to -4.10.0.jar
         java -Dwebdriver.chrome.driver="C:\WebDriver\chromedriver.exe" -jar "C:\WebDriver\selenium-java-4.10.0\selenium-server-4.10.0.jar" standalone
 
-
-
-         08:40:08.886 WARN [SeleniumSpanExporter$1.lambda$export$3] - {"traceId": "02f0a0e4b6fdea295572454e7d1cdb79","eventTime": 1690202408884643001,"eventName": "HTTP request execution complete","attributes": {"http.flavor": 1,"http.handler_class": "org.openqa.selenium.grid.sessionqueue.local.LocalNewSessionQueue","http.host": "localhost:4444","http.method": "POST","http.request_content_length": "695","http.scheme": "HTTP","http.status_code": 500,"http.target": "\u002fsession","http.user_agent": "selenium\u002f4.7.0 (java windows)"}}
+08:40:08.886 WARN [SeleniumSpanExporter$1.lambda$export$3] - {"traceId": "02f0a0e4b6fdea295572454e7d1cdb79","eventTime": 1690202408884643001,"eventName": "HTTP request execution complete","attributes": {"http.flavor": 1,"http.handler_class": "org.openqa.selenium.grid.sessionqueue.local.LocalNewSessionQueue","http.host": "localhost:4444","http.method": "POST","http.request_content_length": "695","http.scheme": "HTTP","http.status_code": 500,"http.target": "\u002fsession","http.user_agent": "selenium\u002f4.7.0 (java windows)"}}
 
 08:55:31.387 WARN [SeleniumSpanExporter$1.lambda$export$3] - {"traceId": "37b7343c5b347c22799b160f7bd02253","eventTime": 1690203331386355400,"eventName": "HTTP request execution complete","attributes": {"http.flavor": 1,"http.handler_class": "org.openqa.selenium.grid.sessionqueue.local.LocalNewSessionQueue","http.host": "localhost:4444","http.method": "POST","http.request_content_length": "695","http.scheme": "HTTP","http.status_code": 500,"http.target": "\u002fsession","http.user_agent": "selenium\u002f4.7.0 (java windows)"}}
 

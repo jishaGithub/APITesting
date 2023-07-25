@@ -14,9 +14,7 @@ public class GoogleHomePage extends AbstractPage {
         super(driver);
     }
 
-    public void open() {
-        getDriver().get("https://www.google.com");
-    }
+
 
 
 }
