@@ -4,14 +4,13 @@ import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import java.util.*;
 
 public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
-    private String[] navigationItems = { "Overview","Getting started","Project structure",
-            "Configuration","Execution","Cucumber","Contribution","Migration Guide" };
-    private String[] nestedItems = { "Web","Mobile","API", "Windows", "Database", "DataProvider",
-            "Driver", "Mobile", "Localization", "Program flow", "Proxy", "Screenshot", "Security", "Zebrunner" };
+    private static final Logger LOGGER = LoggerFactory.getLogger(ZebRunnerNavigationMenu.class);
     @FindBy(xpath="//div[@class='md-sidebar__inner']/nav/ul/li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
     @FindBy(xpath = "//li/nav/ul/li[@class='md-nav__item md-nav__item--active']//a[@class='md-nav__link md-nav__link--active']")
@@ -33,10 +32,8 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
     private ExtendedWebElement navigationNonNestedMenuItem;
     @FindBy(xpath = "//*[contains(text(), '%s')]")
     ExtendedWebElement navigationNestedMainItem;
-
     @FindBy(xpath = "(//li/nav/ul/li/a[@title='%s'])[2]")
     ExtendedWebElement mobileElementInsideAdvancedMenu;
-
     @FindBy(xpath ="//li/nav/ul/li/a[@title='%s']")
     ExtendedWebElement elementOfNestedMenu;
 
@@ -44,15 +41,29 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
         super(driver);
     }
 
-    public boolean isNavigationVisible() {
-        Assert.assertTrue(navigationMenu.isPresent(),"Navigation Element is not present");
-        Assert.assertEquals(carinaInNavigationMenu.getText(), "Carina");
+    public boolean isNavigationMenuPresent() {
+        LOGGER.info("Attempting to see Navigation Menu is present");
+        return navigationMenu.isPresent();
+    }
+
+    public String isCarinaInNavigationMenu() {
+        LOGGER.info("Attempting to see if Carina text is in Navigation Menu");
+        return carinaInNavigationMenu.getText();
+    }
+
+    public boolean isNavigationLinksListEmpty() {
+        LOGGER.info("Attempting to see Navigation Links are empty or not");
         List<ExtendedWebElement> navigationLinksList = navigationMenu.findExtendedWebElements(By.className("md-nav__link"));
-        Assert.assertFalse(navigationLinksList.isEmpty(), "list of navigation link is not present");
+        return navigationLinksList.isEmpty();
+    }
+
+    public boolean isCurrentPageLinkHighlighted() {
+        LOGGER.info("Attempting to see if current page is highlighted");
         return Objects.equals(mainBodyHeader.getText(), activeNavigationMenuItem.getText());
     }
 
     public boolean isHiddenElementsPresentInNavigation() {
+        LOGGER.info("Attempting to see if there are any hiddene elements");
         int hiddenElementCount = 0;
         for (ExtendedWebElement navMenuItem : navigationAllMenuItems) {
             if (!navMenuItem.isVisible()) {
@@ -63,6 +74,7 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
     }
 
     public boolean isClickingOnParentNavRevealsSubPages() {
+        LOGGER.info("Attempting to see if Clicking On ParentNav Reveals SubPages");
         for (ExtendedWebElement nestedItems : nestedNavigationMenuItems) {
             nestedItems.click();
         }
@@ -74,31 +86,35 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
         return true;
     }
 
-    public void addNestedMenuItems() {
+    private void addNestedMenuItems() {
         nestedMainMenuAndSubMenus.put("Automation", new ArrayList<>());
-        for (int i=0; i<=3; i++) {
-            nestedMainMenuAndSubMenus.get("Automation").add(nestedItems[i]);
+        for (NestedItem item : NestedItem.values()) {
+            if (item.ordinal() <= 3) {
+                nestedMainMenuAndSubMenus.get("Automation").add(item.getTitle());
+            }
         }
         nestedMainMenuAndSubMenus.put("Advanced", new ArrayList<>());
-        for (int i=4; i <= 12; i++) {
-            nestedMainMenuAndSubMenus.get("Advanced").add(nestedItems[i]);
+        for (NestedItem item : NestedItem.values()) {
+            if (item.ordinal() >= 4 && item.ordinal() <= 12) {
+                nestedMainMenuAndSubMenus.get("Advanced").add(item.getTitle());
+            }
         }
         nestedMainMenuAndSubMenus.put("Integration", new ArrayList<>());
-        nestedMainMenuAndSubMenus.get("Integration").add(nestedItems[13]);
+        nestedMainMenuAndSubMenus.get("Integration").add(NestedItem.ZEBRUNNER.getTitle());
     }
 
     public boolean clickOnEachNavElement() {
+        addNestedMenuItems();
         boolean redirectionValidationResult;
         boolean validateClickedNavElementHighlightedResult;
-        for (String item : navigationItems) {
-            navigationNonNestedMenuItem.format(item);
+        System.out.println(NavigationItem.values());
+        for (NavigationItem item : NavigationItem.values()) {
+            navigationNonNestedMenuItem.format(item.getTitle());
             navigationNonNestedMenuItem.click();
             String mainPageHeader = mainBodyHeader.getText();
             String navigationMenuTitle = navigationNonNestedMenuItem.getText();
-            System.out.println(mainPageHeader+"----"+navigationMenuTitle);
             redirectionValidationResult = validateRedirection(mainPageHeader, navigationMenuTitle);
             validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationMenuTitle);
-            System.out.println(highlightedNavElement.getText()+"^^^^^^"+navigationMenuTitle);
             if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
                 return false;
             }

@@ -7,6 +7,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 public class ZebRunnerTest implements IAbstractTest {
+
     @Test
     public void validateZebRunnerLogoInHeader() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
@@ -59,7 +60,10 @@ public class ZebRunnerTest implements IAbstractTest {
         ZebRunnerNavigationMenu zebRunnerNavigationMenu = new ZebRunnerNavigationMenu(getDriver());
         zebRunnerNavigationMenu.open();
         Assert.assertTrue(zebRunnerNavigationMenu.isPageOpened(), "Zebrunner home page is not open");
-        Assert.assertTrue(zebRunnerNavigationMenu.isNavigationVisible(),"Navigation Validation not successful");
+        Assert.assertTrue(zebRunnerNavigationMenu.isNavigationMenuPresent(),"Navigation Element is not present");
+        Assert.assertEquals(zebRunnerNavigationMenu.isCarinaInNavigationMenu(), "Carina");
+        Assert.assertFalse(zebRunnerNavigationMenu.isNavigationLinksListEmpty(), "list of navigation link is not present");
+        Assert.assertTrue(zebRunnerNavigationMenu.isCurrentPageLinkHighlighted(),"Current page link is not highlighted");
     }
 
     @Test
@@ -70,12 +74,12 @@ public class ZebRunnerTest implements IAbstractTest {
         zebRunnerNavigationMenu.isHiddenElementsPresentInNavigation();
         Assert.assertTrue(zebRunnerNavigationMenu.isClickingOnParentNavRevealsSubPages(), "Clicking on parent nav element doesn't reveal the links for sub-pages");
     }
+
     @Test
     public void validateEachElementOfNavigation() {
         ZebRunnerNavigationMenu zebRunnerNavigationMenu = new ZebRunnerNavigationMenu(getDriver());
         zebRunnerNavigationMenu.open();
         Assert.assertTrue(zebRunnerNavigationMenu.isPageOpened(), "ZebRunner home page is not open");
-        zebRunnerNavigationMenu.addNestedMenuItems();
         Assert.assertTrue(zebRunnerNavigationMenu.clickOnEachNavElement(), "Error validating the redirection in main menu");
         Assert.assertTrue(zebRunnerNavigationMenu.clickOnEachNestedElement(), "Error validating the redirection in nested menu");
 
