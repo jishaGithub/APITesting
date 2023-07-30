@@ -1,26 +1,27 @@
 package com.solvd.carina.demo.gui.pages.desktop.zebrunner;
 
+import com.solvd.carina.demo.gui.components.zebrunner.header.HeaderMenu;
+import com.solvd.carina.demo.gui.pages.common.ZebRunnerHomePageBase;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import com.zebrunner.carina.webdriver.gui.AbstractPage;
-import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;
 
-public class ZebRunnerHomePage extends AbstractPage {
+public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZebRunnerHomePage.class);
+    @FindBy(css = "header.md-header")
+    private HeaderMenu header;
+    @FindBy(xpath="//nav[@class='md-nav md-nav--primary']")
+    private ZebRunnerNavigationMenu navigationMenu;
     @FindBy(xpath = "//a[@class='md-header-nav__button md-logo']")
     private ExtendedWebElement zebrunnerLogo;
-    @FindBy(xpath = "//header[@class='md-header']")
-    private ExtendedWebElement header;
+
     @FindBy(xpath = "//div[@class='md-header-nav__ellipsis']/span[1]")
     private ExtendedWebElement brandName;
     @FindBy(className = "md-search__form")
@@ -29,98 +30,108 @@ public class ZebRunnerHomePage extends AbstractPage {
     private ExtendedWebElement footerElement;
     @FindBy(xpath = "//div[@class='md-header-nav__ellipsis']/span[1]")
     private List<ExtendedWebElement> headerChildElements;
-
     @FindBy(xpath="//div[@class='md-content']/article/h1")
-    protected ExtendedWebElement mainBodyHeader;
+    private ExtendedWebElement mainBodyHeader;
 
     public ZebRunnerHomePage(WebDriver driver) {
         super(driver);
+        setUiLoadedMarker(mainBodyHeader);
     }
 
-    public void clickOnLogo() {
-        LOGGER.info("Attempting to click on Zebrunner Logo");
-        zebrunnerLogo.click();
+    @Override
+    public HeaderMenu getHeader() {
+        return header;
     }
 
-    public boolean isZebrunnerLogoDisplayed() {
-        LOGGER.info("Attempting to see if Zebrunner Logo is present");
-        return zebrunnerLogo.isElementPresent();
+    @Override
+    public ZebRunnerNavigationMenu getNavigationMenu() {
+        return navigationMenu;
     }
 
+    @Override
     public boolean isLogoOnLeftSideOfHeader() {
-        LOGGER.info("Attempting to see if Zebrunner Logo is on the left side of the header");
-        int logoXPosition = zebrunnerLogo.getLocation().getX();
+        ExtendedWebElement logo = getHeader().getZebrunnerLogo();
+        int logoXPosition = logo.getLocation().getX();
         int firstChildElementLocation = headerChildElements.get(0).getLocation().getX();
         return logoXPosition <= firstChildElementLocation;
     }
 
+    @Override
     public boolean isClickingOnLogoRedirectsToOverviewPage() {
         LOGGER.info("Attempting to see when Zebrunner Logo is clicked, does it redirect to overview page");
-        zebrunnerLogo.click();
         return Objects.equals(mainBodyHeader.getText(), "Overview");
     }
 
+    @Override
     public boolean isCarinaBrandPresentOnHeader() {
         LOGGER.info("Attempting to see if Carina text is on the header");
-        ExtendedWebElement carinaBrandElement = header.findExtendedWebElement(By.xpath("//div[@class='md-header-nav__ellipsis']/span[1]"));
+        ExtendedWebElement carinaBrandElement = getHeader().getCarinaBrand();
         return Objects.equals(carinaBrandElement.getText(), "Carina");
     }
 
+    @Override
     public boolean isSearchComponentOnHeader() {
         LOGGER.info("Attempting to see if header contains search Component");
-        ExtendedWebElement searchComponent = header.findExtendedWebElement(By.xpath("//form[@class='md-search__form']"));
+        ExtendedWebElement searchComponent = getHeader().getSearchComponentOnHeader();
         return searchComponent.isElementPresent();
     }
 
-    public boolean isSearchComponentIncludeIconAndSearchText() {
-        LOGGER.info("Attempting to see if search component includes Icon and form with Search Text");
-        ExtendedWebElement searchIcon = searchElement.findExtendedWebElement(By.xpath("//label[@class='md-search__icon md-icon']"));
-        ExtendedWebElement inputForm = searchElement.findExtendedWebElement(By.xpath("//input[@class='md-search__input']"));
+    @Override
+    public boolean isLogoAndInputFormPresent() {
+        LOGGER.info("Attempting to get search Icon");
+        ExtendedWebElement searchIcon = getHeader().getSearchIcon();
+        LOGGER.info("Attempting to get search Input form");
+        ExtendedWebElement inputForm = getHeader().getSearchInputForm();
+        LOGGER.info("Attempting to get the placeholder text in input form");
         String inputFormPlaceHolder = inputForm.getAttribute("placeholder");
         return searchIcon.isElementPresent() && inputForm.isElementPresent() && inputFormPlaceHolder.equals("Search");
     }
 
-    private boolean isGithubLinkIncluded() {
+    @Override
+    public boolean isSearchComponentIncludeIconAndSearchText() {
+        LOGGER.info("Search component is made of icon and input with ‘Search’ text");
+        return getHeader().isSearchComponentMadeOfSearchIconAndInputForm();
+    }
+
+    @Override
+    public boolean isGithubLinkIncluded() {
         LOGGER.info("Attempting to see if github link is present on header");
-        ExtendedWebElement githubLink = header.findExtendedWebElement(By.xpath("//nav/div[@class='md-header-nav__source']/a[@href='https://github.com/zebrunner/carina/']"));
-        boolean githubAvailability = githubLink.isPresent();
-        LOGGER.info("Attempting to click on the github link");
-        if (githubAvailability) {
-            githubLink.click();
-            return githubAvailability;
-        }
-        return githubAvailability;
+        return getHeader().getGithubLink().isPresent();
     }
 
-    public String isGithubLinkRedirectedToCarinaGithub() {
-        if (isGithubLinkIncluded()) {
-            return getDriver().getCurrentUrl();
-        }
-        return null;
+    @Override
+    public String getCurrentPageURL() {
+        return getDriver().getCurrentUrl();
     }
 
-    public boolean isHeaderOnTop() {
-        int headerPosition = header.getLocation().getY();
-        return headerPosition == 0;
+    @Override
+    public boolean isHeaderVisible() {
+        return getHeader().isHeaderVisible();
     }
 
-    public boolean isHeaderSticky() {
+    @Override
+    public boolean scrollToBottom() {
+        LOGGER.info("Attempting to scroll to the bottom of the home page");
         int randomSelector = new Random().nextInt(2);
-
         switch (randomSelector) {
             case 0:
+                LOGGER.info("Scrolling using Actions Class");
                 Actions action = new Actions(getDriver());
                 action.moveToElement(footerElement.getElement()).perform();
-                break;
+                return true;
             case 1:
+                LOGGER.info("Scrolling using Javascript");
                 JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
                 javascriptExecutor.executeScript("window.scrollTo(0,document.body.scrollHeight)");
-                break;
+                return true;
         }
-        Assert.assertTrue(header.isVisible(), "header is not visible from the bottom of the page");
-        WebElement headerElementByCss = getDriver().findElement(By.cssSelector(".md-header"));
-        String position = headerElementByCss.getCssValue("position");
-        return position.equalsIgnoreCase("sticky");
+        return false;
     }
 
+    @Override
+    public boolean isHeaderSticky() {
+        LOGGER.info("Attempting to see if header is still on the top (is sticky) when we scrolled to the bottom");
+        String cssValueOfPosition = header.getRootExtendedElement().getElement().getCssValue("position");
+        return cssValueOfPosition.equalsIgnoreCase("sticky");
+    }
 }

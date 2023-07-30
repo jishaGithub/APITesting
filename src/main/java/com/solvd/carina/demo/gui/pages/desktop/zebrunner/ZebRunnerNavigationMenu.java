@@ -1,16 +1,18 @@
 package com.solvd.carina.demo.gui.pages.desktop.zebrunner;
 
+import com.solvd.carina.demo.gui.components.zebrunner.navigation.ZebRunnerNavigationMenuBase;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.By;
+import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.testng.Assert;
+
 import java.util.*;
 
-public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
+public class ZebRunnerNavigationMenu extends ZebRunnerNavigationMenuBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZebRunnerNavigationMenu.class);
+    private Map<String, ArrayList<String>> nestedMainMenuAndSubMenus = new  LinkedHashMap<>();
     @FindBy(xpath="//div[@class='md-sidebar__inner']/nav/ul/li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
     @FindBy(xpath = "//li/nav/ul/li[@class='md-nav__item md-nav__item--active']//a[@class='md-nav__link md-nav__link--active']")
@@ -23,11 +25,10 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
     private List<ExtendedWebElement> nestedNavigationMenuItems;
     @FindBy(xpath="//li[@class='md-nav__item md-nav__item--nested']/nav/ul[@class='md-nav__list']/li[@class='md-nav__item']/a")
     private List<ExtendedWebElement> nestedSubPages;
-    @FindBy(css=".md-sidebar")
+    @FindBy(xpath="//nav[@class='md-nav md-nav--primary']")
     private ExtendedWebElement navigationMenu;
     @FindBy(xpath = "//nav[@class='md-nav md-nav--primary']/*[1]")
-    private ExtendedWebElement carinaInNavigationMenu;
-    private Map<String, ArrayList<String>> nestedMainMenuAndSubMenus = new  LinkedHashMap<>();
+    private ExtendedWebElement firstChildElementInNavigationMenu;
     @FindBy(xpath = "//div[@class='md-sidebar__inner']/nav/ul/li/a[@title='%s']")
     private ExtendedWebElement navigationNonNestedMenuItem;
     @FindBy(xpath = "//*[contains(text(), '%s')]")
@@ -36,34 +37,42 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
     ExtendedWebElement mobileElementInsideAdvancedMenu;
     @FindBy(xpath ="//li/nav/ul/li/a[@title='%s']")
     ExtendedWebElement elementOfNestedMenu;
+    @FindBy(xpath="//div[@class='md-content']/article/h1")
+    private ExtendedWebElement mainBodyHeader;
+    @FindBy(className = "md-nav__link")
+    private List<ExtendedWebElement> navigationLinksList;
 
-    public ZebRunnerNavigationMenu(WebDriver driver) {
-        super(driver);
+    public ZebRunnerNavigationMenu(WebDriver driver, SearchContext searchContext) {
+        super(driver, searchContext);
     }
 
+    @Override
     public boolean isNavigationMenuPresent() {
         LOGGER.info("Attempting to see Navigation Menu is present");
         return navigationMenu.isPresent();
     }
 
-    public String isCarinaInNavigationMenu() {
+    @Override
+    public boolean isCarinaTheFirstElementInNavigationMenu() {
         LOGGER.info("Attempting to see if Carina text is in Navigation Menu");
-        return carinaInNavigationMenu.getText();
+        return firstChildElementInNavigationMenu.getText().equalsIgnoreCase("Carina");
     }
 
-    public boolean isNavigationLinksListEmpty() {
+    @Override
+    public boolean isNavigationLinksListPresent() {
         LOGGER.info("Attempting to see Navigation Links are empty or not");
-        List<ExtendedWebElement> navigationLinksList = navigationMenu.findExtendedWebElements(By.className("md-nav__link"));
-        return navigationLinksList.isEmpty();
+        return navigationLinksList.size() > 0;
     }
 
+    @Override
     public boolean isCurrentPageLinkHighlighted() {
         LOGGER.info("Attempting to see if current page is highlighted");
         return Objects.equals(mainBodyHeader.getText(), activeNavigationMenuItem.getText());
     }
 
+    @Override
     public boolean isHiddenElementsPresentInNavigation() {
-        LOGGER.info("Attempting to see if there are any hiddene elements");
+        LOGGER.info("Attempting to see if there are any hidden elements");
         int hiddenElementCount = 0;
         for (ExtendedWebElement navMenuItem : navigationAllMenuItems) {
             if (!navMenuItem.isVisible()) {
@@ -73,8 +82,9 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
         return hiddenElementCount  > 0;
     }
 
+    @Override
     public boolean isClickingOnParentNavRevealsSubPages() {
-        LOGGER.info("Attempting to see if Clicking On ParentNav Reveals SubPages");
+        LOGGER.info("Attempting to see if Clicking On ParentNav Reveals Nested SubPages");
         for (ExtendedWebElement nestedItems : nestedNavigationMenuItems) {
             nestedItems.click();
         }
@@ -103,6 +113,7 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
         nestedMainMenuAndSubMenus.get("Integration").add(NestedItem.ZEBRUNNER.getTitle());
     }
 
+    @Override
     public boolean clickOnEachNavElement() {
         addNestedMenuItems();
         boolean redirectionValidationResult;
@@ -122,6 +133,7 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
         return true;
     }
 
+    @Override
     public boolean clickOnEachNestedElement() {
         ExtendedWebElement navigationNestedSubItem;
         boolean redirectionValidationResult;
@@ -140,7 +152,7 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
                 navigationNestedSubItem.click();
                 String mainPageHeader = mainBodyHeader.getText();
                 String navigationNestedMenuTitle = navigationNestedSubItem.getText();
-                if (nestedItem == "Zebrunner") {
+                if (Objects.equals(nestedItem, "Zebrunner")) {
                     redirectionValidationResult = validateRedirection(mainPageHeader.substring(0,9),navigationNestedMenuTitle);
                 } else {
                     redirectionValidationResult = validateRedirection(mainPageHeader, navigationNestedMenuTitle);
@@ -154,11 +166,13 @@ public class ZebRunnerNavigationMenu extends ZebRunnerHomePage {
         return true;
     }
 
-    public boolean validateRedirection(String mainPageHeader, String navigationMenuTitle) {
+    private boolean validateRedirection(String mainPageHeader, String navigationMenuTitle) {
+        LOGGER.info("Attempting to see if redirection works correctly");
         return mainPageHeader.equals(navigationMenuTitle);
     }
 
-    public boolean validateClickedNavElementHighlighted(ExtendedWebElement highlightedNavItem, String navigationMenuTitle) {
+    private boolean validateClickedNavElementHighlighted(ExtendedWebElement highlightedNavItem, String navigationMenuTitle) {
+        LOGGER.info("Attempting to see if correct nav element is highlighted");
         return highlightedNavItem.getText().equals(navigationMenuTitle);
     }
 
