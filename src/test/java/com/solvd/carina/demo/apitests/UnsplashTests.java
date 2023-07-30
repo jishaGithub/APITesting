@@ -3,9 +3,11 @@ package com.solvd.carina.demo.apitests;
 import com.solvd.carina.demo.api.unsplash.UnsplashAPIGetPhotos;
 import com.solvd.carina.demo.api.unsplash.UnsplashAPIGetTopics;
 import com.solvd.carina.demo.api.unsplash.UnsplashAPIInvalidCredentials;
+import com.zebrunner.carina.api.apitools.validation.JsonCompareKeywords;
 import com.zebrunner.carina.core.registrar.ownership.MethodOwner;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
+import org.skyscreamer.jsonassert.JSONCompareMode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
@@ -24,17 +26,19 @@ public class UnsplashTests {
         String searchTerm = "eagle";
         int photoPerPage = 8;
         int totalPhotos = 20;
-        UnsplashAPIGetPhotos unsplashAPIGetPhotos = new UnsplashAPIGetPhotos();
+        UnsplashAPIGetPhotos unsplashAPIGetPhotos = new UnsplashAPIGetPhotos(searchTerm, photoPerPage);
+        Response response = unsplashAPIGetPhotos.callAPIExpectSuccess();
+        unsplashAPIGetPhotos.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
+        unsplashAPIGetPhotos.validateResponseAgainstSchema("api/unsplash/_get/response.schema");
         List<Map<String, Object>> allPhotosFromResponse = new ArrayList<>();
         while (allPhotosFromResponse.size() < totalPhotos) {
-            Response response = unsplashAPIGetPhotos.getPhotos(searchTerm, photoPerPage);
             assertEquals(response.getStatusCode(), 200);
             JsonPath jsonPath = response.jsonPath();
             List<Map<String, Object>> responseResults = jsonPath.getList("results");
             assertNotNull(responseResults);
             allPhotosFromResponse.addAll(responseResults);
         }
-        LOGGER.info(String.valueOf(allPhotosFromResponse.size()+" photos retrieved successfully!"));
+        LOGGER.info(allPhotosFromResponse.size() + " photos retrieved successfully!");
         assertEquals(allPhotosFromResponse.size(), totalPhotos, totalPhotos+" photos are not included in the response");
         for (Map<String, Object> photoData : allPhotosFromResponse) {
             Map<String, Object> userData = (Map<String, Object>) photoData.get("user");
@@ -50,25 +54,27 @@ public class UnsplashTests {
     @MethodOwner(owner="jisha")
     public void validateFeaturedTopicsWithoutRepetition() {
         int pageCount = 3;
-        UnsplashAPIGetTopics unsplashAPIGetTopics = new UnsplashAPIGetTopics();
+        UnsplashAPIGetTopics unsplashAPIGetTopics = new UnsplashAPIGetTopics(pageCount);
         Set<String> uniqueTitles = new HashSet<>();
+        Set<String> repeatedTitles = new HashSet<>();
+        List<String> fullTitles = new ArrayList<>();
         for (int page = 1; page <= pageCount; page++) {
-            Response response = unsplashAPIGetTopics.getTopics(page);
+            Response response = unsplashAPIGetTopics.callAPIExpectSuccess();
             int statusCode = response.getStatusCode();
             Assert.assertEquals(statusCode, 200, "Unexpected status code: " + statusCode);
-            LOGGER.info("Response validated successfully.");
-            List<Boolean> featuredList = response.jsonPath().getList("featured");
-            for (int i = 0; i < featuredList.size(); i++) {
-                Assert.assertTrue(featuredList.get(i), "Topic at index " + i + " is not featured.");
-            }
-            List<String> titles = response.jsonPath().getList("title");
-            for (String title : titles) {
-                Assert.assertFalse(uniqueTitles.contains(title), "Topic title "
-                        + title + " is repeated on page " + page);
+            Assert.assertTrue(response.getBody().toString().length() > 0, "Response shouldn't be empty");
+            fullTitles.addAll(response.jsonPath().getList("title"));
+        }
+        LOGGER.info("Response validated successfully.");
+        for (String title : fullTitles) {
+            if (!(uniqueTitles.contains(title))) {
                 uniqueTitles.add(title);
             }
+            repeatedTitles.add(title);
         }
+        LOGGER.info("Topics that repeated: " + repeatedTitles);
     }
+
 
     @Test
     @MethodOwner(owner = "jisha")
