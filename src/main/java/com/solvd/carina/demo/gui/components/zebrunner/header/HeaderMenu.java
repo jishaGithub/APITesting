@@ -27,9 +27,6 @@ public class HeaderMenu extends HeaderMenuBase {
 
     @FindBy(xpath="//header")
     private ExtendedWebElement header;
-    @FindBy(xpath="..")
-    private ExtendedWebElement parentElement;
-
 
     public HeaderMenu(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
@@ -38,7 +35,6 @@ public class HeaderMenu extends HeaderMenuBase {
     @Override
     public ExtendedWebElement getZebrunnerLogo() {
         return header.findExtendedWebElement(zebrunnerLogo.getBy());
-
     }
 
     @Override
