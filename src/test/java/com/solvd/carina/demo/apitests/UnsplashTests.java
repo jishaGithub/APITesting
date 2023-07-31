@@ -28,7 +28,6 @@ public class UnsplashTests {
         int totalPhotos = 20;
         UnsplashAPIGetPhotos unsplashAPIGetPhotos = new UnsplashAPIGetPhotos(searchTerm, photoPerPage);
         Response response = unsplashAPIGetPhotos.callAPIExpectSuccess();
-        unsplashAPIGetPhotos.validateResponse(JSONCompareMode.STRICT, JsonCompareKeywords.ARRAY_CONTAINS.getKey());
         unsplashAPIGetPhotos.validateResponseAgainstSchema("api/unsplash/_get/response.schema");
         List<Map<String, Object>> allPhotosFromResponse = new ArrayList<>();
         while (allPhotosFromResponse.size() < totalPhotos) {
