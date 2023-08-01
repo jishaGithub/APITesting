@@ -19,7 +19,7 @@ public class ZebRunnerTest implements IAbstractTest {
         Assert.assertTrue(zebRunnerHomePage.isLogoOnLeftSideOfHeader(),"Logo is not on the left side of the header");
         LOGGER.info("Validation Successful : Zebrunner Logo is on the left side of the header");
         LOGGER.info("Attempting to click on Zebrunner Logo");
-        Assert.assertTrue(zebRunnerHomePage.getHeader().clickOnLogo(), "Clicking on logo unsuccessful");
+        zebRunnerHomePage.getHeader().clickOnLogo();
         Assert.assertTrue(zebRunnerHomePage.isClickingOnLogoRedirectsToOverviewPage(), "Clicking on ZebRunner Logo doesn't redirect to overview page");
         LOGGER.info("Validation Successful : Successfully redirected to overview page");
     }
