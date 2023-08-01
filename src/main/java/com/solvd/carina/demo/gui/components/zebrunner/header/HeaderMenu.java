@@ -22,7 +22,7 @@ public class HeaderMenu extends HeaderMenuBase {
     @FindBy(xpath=".//form/input[@class='md-search__input']")
     private ExtendedWebElement searchInputForm;
 
-    @FindBy(xpath = "//nav/div[@class='md-header-nav__source']/a[@href='https://github.com/zebrunner/carina/']")
+    @FindBy(xpath = "//div[@class='md-header-nav__source']/a[@class='md-source']")
     private ExtendedWebElement gitHubLink;
 
     @FindBy(xpath="//header")
