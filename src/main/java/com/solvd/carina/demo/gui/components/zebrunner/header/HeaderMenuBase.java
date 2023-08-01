@@ -13,7 +13,7 @@ public abstract class HeaderMenuBase extends AbstractUIObject {
 
     public abstract ExtendedWebElement getZebrunnerLogo();
     public abstract ExtendedWebElement getHeader();
-    public abstract boolean clickOnLogo();
+    public abstract void clickOnLogo();
     public abstract ExtendedWebElement getCarinaBrand();
     public abstract ExtendedWebElement getSearchComponentOnHeader();
     public abstract ExtendedWebElement getSearchIcon();

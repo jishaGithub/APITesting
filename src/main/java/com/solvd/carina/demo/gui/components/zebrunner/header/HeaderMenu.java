@@ -43,8 +43,8 @@ public class HeaderMenu extends HeaderMenuBase {
     }
 
     @Override
-    public boolean clickOnLogo() {
-        return zebrunnerLogo.clickIfPresent();
+    public void clickOnLogo() {
+        zebrunnerLogo.click();
     }
 
     @Override
