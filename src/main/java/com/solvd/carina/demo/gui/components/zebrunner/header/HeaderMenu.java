@@ -16,10 +16,10 @@ public class HeaderMenu extends HeaderMenuBase {
     @FindBy(xpath="//div[@class='md-search']")
     private ExtendedWebElement searchComponentOnHeader;
 
-    @FindBy(xpath=".//form/label[@class='md-search__icon md-icon']")
+    @FindBy(xpath="//form/label[@class='md-search__icon md-icon']")
     private ExtendedWebElement searchIcon;
 
-    @FindBy(xpath=".//form/input[@class='md-search__input']")
+    @FindBy(xpath="//form/input[@class='md-search__input']")
     private ExtendedWebElement searchInputForm;
 
     @FindBy(xpath = "//div[@class='md-header-nav__source']/a[@class='md-source']")
