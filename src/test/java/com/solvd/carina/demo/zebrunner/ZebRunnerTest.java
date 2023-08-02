@@ -16,11 +16,11 @@ public class ZebRunnerTest implements IAbstractTest {
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
         LOGGER.info("Attempting to see if Zebrunner Logo is on the left side of the header");
-        Assert.assertTrue(zebRunnerHomePage.isLogoOnLeftSideOfHeader(),"Logo is not on the left side of the header");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isZebRunnerLogoOnLeftSideOfHeader(),"Logo is not on the left side of the header");
         LOGGER.info("Validation Successful : Zebrunner Logo is on the left side of the header");
         LOGGER.info("Attempting to click on Zebrunner Logo");
         zebRunnerHomePage.getHeader().clickOnLogo();
-        Assert.assertTrue(zebRunnerHomePage.isClickingOnLogoRedirectsToOverviewPage(), "Clicking on ZebRunner Logo doesn't redirect to overview page");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isClickingOnLogoRedirectsToOverviewPage(), "Clicking on ZebRunner Logo doesn't redirect to overview page");
         LOGGER.info("Validation Successful : Successfully redirected to overview page");
     }
 
@@ -29,21 +29,19 @@ public class ZebRunnerTest implements IAbstractTest {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
-        Assert.assertTrue(zebRunnerHomePage.isCarinaBrandPresentOnHeader(), "Carina text not found on the header");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isCarinaBrandPresentOnHeader(), "Carina text not found on the header");
         LOGGER.info("Validation Successful : Carina text found on the header");
     }
-
-
 
     @Test
     public void validateSearchComponent() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
-        Assert.assertTrue(zebRunnerHomePage.isSearchComponentOnHeader(), "Search component is missing");
-        Assert.assertTrue(zebRunnerHomePage.isLogoAndInputFormPresent(),"Search logo/input form not found");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentOnHeader(), "Search component is missing");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isLogoAndInputFormWithPlaceholderPresent(),"Search logo/input form not found");
         LOGGER.info("Attempting to see if search component includes Icon and form with Search Text");
-        Assert.assertTrue(zebRunnerHomePage.isSearchComponentIncludeIconAndSearchText(), "Search component is not made of icon and input with ‘Search’ text");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentMadeOfSearchIconAndInputForm(), "Search component is not made of icon and input with ‘Search’ text");
     }
 
     @Test
@@ -51,8 +49,8 @@ public class ZebRunnerTest implements IAbstractTest {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
-        Assert.assertTrue(zebRunnerHomePage.isGithubLinkIncluded(), "Couldn't find github link on header");
-        Assert.assertTrue(zebRunnerHomePage.getHeader().getGithubLink().clickIfPresent(), "Cannot click on the github Link");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isGithubLinkIncluded(), "Couldn't find github link on header");
+        zebRunnerHomePage.getHeader().clickOnGithubLink();
         String currentUrl = zebRunnerHomePage.getCurrentPageURL();
         String expectedCarinaGithubUrl = "https://github.com/zebrunner/carina/";
         LOGGER.info("Attempting to see if github link is redirecting to carina github project");
@@ -65,7 +63,7 @@ public class ZebRunnerTest implements IAbstractTest {
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(), "Zebrunner home page is not open");
         Assert.assertTrue(zebRunnerHomePage.scrollToBottom(), "Scrolling Unsuccessful");
-        Assert.assertTrue(zebRunnerHomePage.isHeaderVisible(), "Header is not visible from bottom");
+        Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
         Assert.assertTrue(zebRunnerHomePage.isHeaderSticky(), "Header is not sticky");
         LOGGER.info("Validation Successful : Header is sticky");
     }

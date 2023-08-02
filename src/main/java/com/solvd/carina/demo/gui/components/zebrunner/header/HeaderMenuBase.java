@@ -10,16 +10,16 @@ public abstract class HeaderMenuBase extends AbstractUIObject {
     public HeaderMenuBase(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
-
-    public abstract ExtendedWebElement getZebrunnerLogo();
-    public abstract ExtendedWebElement getHeader();
     public abstract void clickOnLogo();
-    public abstract ExtendedWebElement getCarinaBrand();
-    public abstract ExtendedWebElement getSearchComponentOnHeader();
-    public abstract ExtendedWebElement getSearchIcon();
-    public abstract ExtendedWebElement getSearchInputForm();
     public abstract boolean isSearchComponentMadeOfSearchIconAndInputForm();
-    public abstract ExtendedWebElement getGithubLink();
     public abstract boolean isHeaderVisible();
+    public abstract boolean isZebRunnerLogoOnLeftSideOfHeader();
+    public abstract boolean isClickingOnLogoRedirectsToOverviewPage();
+    public abstract boolean isCarinaBrandPresentOnHeader();
+    public abstract boolean isGithubLinkIncluded();
+    public abstract void clickOnGithubLink();
+    public abstract boolean isSearchComponentOnHeader();
+    public abstract boolean isLogoAndInputFormWithPlaceholderPresent();
+
 
 }

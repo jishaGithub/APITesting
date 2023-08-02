@@ -1,6 +1,7 @@
-package com.solvd.carina.demo.gui.pages.desktop.zebrunner;
+package com.solvd.carina.demo.gui.components.zebrunner.navigation;
 
-import com.solvd.carina.demo.gui.components.zebrunner.navigation.ZebRunnerNavigationMenuBase;
+import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NavigationItem;
+import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NestedItem;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
