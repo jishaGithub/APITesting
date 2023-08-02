@@ -1,7 +1,8 @@
 package com.solvd.carina.demo.gui.pages.desktop.zebrunner;
 
 import com.solvd.carina.demo.gui.components.zebrunner.header.HeaderMenu;
-import com.solvd.carina.demo.gui.components.zebrunner.navigation.ZebRunnerNavigationMenu;
+import com.solvd.carina.demo.gui.components.zebrunner.navigation.NavigationMenu;
+import com.solvd.carina.demo.gui.components.zebrunner.search.SearchComponentMenu;
 import com.solvd.carina.demo.gui.pages.common.ZebRunnerHomePageBase;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.JavascriptExecutor;
@@ -18,7 +19,9 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
     @FindBy(css = "header.md-header")
     private HeaderMenu header;
     @FindBy(xpath="//nav[@class='md-nav md-nav--primary']")
-    private ZebRunnerNavigationMenu navigationMenu;
+    private NavigationMenu navigationMenu;
+    @FindBy(xpath="//form[@class='md-search__form']")
+    private SearchComponentMenu searchComponentMenu;
     @FindBy(xpath = "//a[@class='md-header-nav__button md-logo']")
     private ExtendedWebElement zebrunnerLogo;
     @FindBy(xpath = "//div[@class='md-header-nav__ellipsis']/span[1]")
@@ -36,15 +39,20 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
         super(driver);
         setUiLoadedMarker(mainBodyHeader);
     }
-
     @Override
     public HeaderMenu getHeader() {
         return header;
     }
     @Override
-    public ZebRunnerNavigationMenu getNavigationMenu() {
+    public NavigationMenu getNavigationMenu() {
         return navigationMenu;
     }
+
+    @Override
+    public SearchComponentMenu getSearchComponentMenu() {
+        return searchComponentMenu;
+    }
+
     @Override
     public String getCurrentPageURL() {
         return getDriver().getCurrentUrl();

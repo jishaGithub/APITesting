@@ -11,8 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import java.util.*;
 
-public class ZebRunnerNavigationMenu extends ZebRunnerNavigationMenuBase {
-    private static final Logger LOGGER = LoggerFactory.getLogger(ZebRunnerNavigationMenu.class);
+public class NavigationMenu extends NavigationMenuBase {
+    private static final Logger LOGGER = LoggerFactory.getLogger(NavigationMenu.class);
     private Map<String, ArrayList<String>> nestedMainMenuAndSubMenus = new  LinkedHashMap<>();
     @FindBy(xpath="//div[@class='md-sidebar__inner']/nav/ul/li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
@@ -43,7 +43,7 @@ public class ZebRunnerNavigationMenu extends ZebRunnerNavigationMenuBase {
     @FindBy(className = "md-nav__link")
     private List<ExtendedWebElement> navigationLinksList;
 
-    public ZebRunnerNavigationMenu(WebDriver driver, SearchContext searchContext) {
+    public NavigationMenu(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
 

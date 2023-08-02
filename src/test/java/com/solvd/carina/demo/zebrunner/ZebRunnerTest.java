@@ -39,9 +39,10 @@ public class ZebRunnerTest implements IAbstractTest {
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
         Assert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentOnHeader(), "Search component is missing");
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isLogoAndInputFormWithPlaceholderPresent(),"Search logo/input form not found");
+        Assert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isLogoAndInputFormWithPlaceholderPresent(),"Search logo/input form not found");
         LOGGER.info("Attempting to see if search component includes Icon and form with Search Text");
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentMadeOfSearchIconAndInputForm(), "Search component is not made of icon and input with ‘Search’ text");
+        Assert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isSearchComponentMadeOfSearchIconAndInputForm(), "Search component is not made of icon and input with ‘Search’ text");
+        LOGGER.info("Validation Successful : Validated search component");
     }
 
     @Test
@@ -55,6 +56,7 @@ public class ZebRunnerTest implements IAbstractTest {
         String expectedCarinaGithubUrl = "https://github.com/zebrunner/carina/";
         LOGGER.info("Attempting to see if github link is redirecting to carina github project");
         Assert.assertEquals(expectedCarinaGithubUrl, currentUrl, "Link didn't redirect to carina github project");
+        LOGGER.info("Validation Successful : Validated Github Link");
     }
 
     @Test
@@ -77,6 +79,7 @@ public class ZebRunnerTest implements IAbstractTest {
         Assert.assertTrue(homePage.getNavigationMenu().isCarinaTheFirstElementInNavigationMenu(), "Carina heading is not the first element of navigation menu");
         Assert.assertTrue(homePage.getNavigationMenu().isNavigationLinksListPresent(), "list of navigation links is not present");
         Assert.assertTrue(homePage.getNavigationMenu().isCurrentPageLinkHighlighted(),"Current page link is not highlighted");
+        LOGGER.info("Validation Successful : Validated navigation menu");
     }
 
     @Test
@@ -86,6 +89,7 @@ public class ZebRunnerTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "Zebrunner home page is not open");
         Assert.assertTrue(homePage.getNavigationMenu().isHiddenElementsPresentInNavigation(),"There are no hidden components");
         Assert.assertTrue(homePage.getNavigationMenu().isClickingOnParentNavRevealsSubPages(), "Clicking on parent nav element doesn't reveal the links for sub-pages");
+        LOGGER.info("Validation Successful : Validated the presence of hidden elements in navigation menu");
     }
 
     @Test
@@ -95,5 +99,6 @@ public class ZebRunnerTest implements IAbstractTest {
         Assert.assertTrue(homePage.isPageOpened(), "ZebRunner home page is not open");
         Assert.assertTrue(homePage.getNavigationMenu().clickOnEachNavElement(), "Error validating the redirection in main menu");
         Assert.assertTrue(homePage.getNavigationMenu().clickOnEachNestedElement(), "Error validating the redirection in nested menu");
+        LOGGER.info("Validation Successful : Validated the all navigation menu elements");
     }
 }

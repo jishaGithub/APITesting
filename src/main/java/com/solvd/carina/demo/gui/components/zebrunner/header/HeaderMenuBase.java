@@ -6,12 +6,10 @@ import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 
 public abstract class HeaderMenuBase extends AbstractUIObject {
-
     public HeaderMenuBase(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
     }
     public abstract void clickOnLogo();
-    public abstract boolean isSearchComponentMadeOfSearchIconAndInputForm();
     public abstract boolean isHeaderVisible();
     public abstract boolean isZebRunnerLogoOnLeftSideOfHeader();
     public abstract boolean isClickingOnLogoRedirectsToOverviewPage();
@@ -19,7 +17,5 @@ public abstract class HeaderMenuBase extends AbstractUIObject {
     public abstract boolean isGithubLinkIncluded();
     public abstract void clickOnGithubLink();
     public abstract boolean isSearchComponentOnHeader();
-    public abstract boolean isLogoAndInputFormWithPlaceholderPresent();
-
 
 }
