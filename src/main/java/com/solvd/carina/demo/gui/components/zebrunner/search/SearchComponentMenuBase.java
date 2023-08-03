@@ -9,7 +9,7 @@ public abstract class SearchComponentMenuBase extends AbstractUIObject {
         super(driver, searchContext);
     }
 
-    public abstract boolean isLogoAndInputFormWithPlaceholderPresent();
+    public abstract boolean isLogoAndInputFormWithPlaceholderPresentInSearchComponent();
     public abstract boolean isSearchComponentMadeOfSearchIconAndInputForm();
 
 

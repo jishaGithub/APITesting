@@ -69,11 +69,11 @@ public class NavigationMenu extends NavigationMenuBase {
     @Override
     public boolean isCurrentPageLinkHighlighted() {
         LOGGER.info("Attempting to see if current page is highlighted");
-        return Objects.equals(mainBodyHeader.getText(), activeNavigationMenuItem.getText());
+        return mainBodyHeader.getText().equals(activeNavigationMenuItem.getText());
     }
 
     @Override
-    public boolean isHiddenElementsPresentInNavigation() {
+    public boolean isHiddenElementsPresentInNavigationMenu() {
         LOGGER.info("Attempting to see if there are any hidden elements");
         int hiddenElementCount = 0;
         for (ExtendedWebElement navMenuItem : navigationAllMenuItems) {

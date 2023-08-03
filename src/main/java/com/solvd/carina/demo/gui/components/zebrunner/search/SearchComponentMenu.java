@@ -25,7 +25,7 @@ public class SearchComponentMenu extends SearchComponentMenuBase {
     }
 
     @Override
-    public boolean isLogoAndInputFormWithPlaceholderPresent() {
+    public boolean isLogoAndInputFormWithPlaceholderPresentInSearchComponent() {
         LOGGER.info("Attempting to get search Icon");
         boolean isSearchIconPresent = searchIcon.isPresent();
         LOGGER.info("Attempting to get search Input form");

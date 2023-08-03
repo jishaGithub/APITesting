@@ -6,9 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.List;
-import java.util.Objects;
 
 public class HeaderMenu extends HeaderMenuBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(HeaderMenu.class);
@@ -32,7 +30,7 @@ public class HeaderMenu extends HeaderMenuBase {
     }
 
     @Override
-    public void clickOnLogo() {
+    public void clickOnZebRunnerLogo() {
         zebrunnerLogo.click();
     }
 
@@ -54,23 +52,23 @@ public class HeaderMenu extends HeaderMenuBase {
     @Override
     public boolean isClickingOnLogoRedirectsToOverviewPage() {
         LOGGER.info("Attempting to see when Zebrunner Logo is clicked, does it redirect to overview page");
-        return Objects.equals(mainBodyHeader.getText(), "Overview");
+        return mainBodyHeader.getText().equals("Overview");
     }
 
     @Override
     public boolean isCarinaBrandPresentOnHeader() {
         LOGGER.info("Attempting to see if Carina text is on the header");
-        return Objects.equals(carinaTextOnHeader.getText(), "Carina");
+        return carinaTextOnHeader.getText().equals("Carina");
     }
 
     @Override
-    public boolean isGithubLinkIncluded() {
+    public boolean isGithubLinkIncludedOnHeader() {
         LOGGER.info("Attempting to see if github link is present on header");
         return gitHubLink.isPresent();
     }
 
     @Override
-    public void clickOnGithubLink() {
+    public void clickOnGithubLinkOnHeader() {
         gitHubLink.click();
     }
 
@@ -80,5 +78,11 @@ public class HeaderMenu extends HeaderMenuBase {
         return searchComponentOnHeader.isPresent();
     }
 
+    @Override
+    public boolean isHeaderSticky() {
+        LOGGER.info("Attempting to see if header is still on the top (is sticky) when we scrolled to the bottom");
+        String cssValueOfPosition = header.getElement().getCssValue("position");
+        return cssValueOfPosition.equalsIgnoreCase("sticky");
+    }
 
 }

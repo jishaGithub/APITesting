@@ -12,7 +12,7 @@ public abstract class NavigationMenuBase extends AbstractUIObject {
     public abstract boolean isCarinaTheFirstElementInNavigationMenu();
     public abstract boolean isNavigationLinksListPresent();
     public abstract boolean isCurrentPageLinkHighlighted();
-    public abstract boolean isHiddenElementsPresentInNavigation();
+    public abstract boolean isHiddenElementsPresentInNavigationMenu();
     public abstract boolean isClickingOnParentNavRevealsSubPages();
     public abstract boolean clickOnEachNavElement();
 

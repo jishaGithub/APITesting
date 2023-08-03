@@ -70,10 +70,5 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
         return false;
     }
 
-    @Override
-    public boolean isHeaderSticky() {
-        LOGGER.info("Attempting to see if header is still on the top (is sticky) when we scrolled to the bottom");
-        String cssValueOfPosition = header.getRootExtendedElement().getElement().getCssValue("position");
-        return cssValueOfPosition.equalsIgnoreCase("sticky");
-    }
+
 }

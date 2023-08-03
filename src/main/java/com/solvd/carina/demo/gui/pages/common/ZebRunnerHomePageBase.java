@@ -19,6 +19,5 @@ public abstract class ZebRunnerHomePageBase extends AbstractPage {
     public abstract SearchComponentMenu getSearchComponentMenu();
     public abstract String getCurrentPageURL();
     public abstract boolean scrollToBottom();
-    public abstract boolean isHeaderSticky();
 
 }
