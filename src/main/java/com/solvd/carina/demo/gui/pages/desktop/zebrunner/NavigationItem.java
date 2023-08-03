@@ -1,23 +1,39 @@
 package com.solvd.carina.demo.gui.pages.desktop.zebrunner;
 
 public enum NavigationItem {
-
-    OVERVIEW("Overview"),
-    GETTING_STARTED("Getting started"),
-    PROJECT_STRUCTURE("Project structure"),
-    CONFIGURATION("Configuration"),
-    EXECUTION("Execution"),
-    CUCUMBER("Cucumber"),
-    CONTRIBUTION("Contribution"),
-    MIGRATION_GUIDE("Migration Guide");
+    OVERVIEW("Overview", null),
+    GETTING_STARTED("Getting started", null),
+    PROJECT_STRUCTURE("Project structure", null),
+    CONFIGURATION("Configuration", null),
+    EXECUTION("Execution", null),
+    AUTOMATION("Automation", new String[] {"Web", "Mobile", "API", "Windows"}),
+    ADVANCED("Advanced", new String[] {
+            "Database",
+            "DataProvider",
+            "Driver",
+            "Mobile",
+            "Localization",
+            "Program flow",
+            "Proxy",
+            "Screenshot",
+            "Security"}),
+    INTEGRATION("Integration", new String[] {"Zebrunner"}),
+    CUCUMBER("Cucumber", null),
+    CONTRIBUTION("Contribution", null),
+    MIGRATION_GUIDE("Migration Guide", null);
 
     private final String title;
+    private final String[] nestedTitles;
 
-    NavigationItem(String title) {
+    NavigationItem(String title, String[] nestedTitles) {
         this.title = title;
+        this.nestedTitles = nestedTitles;
     }
 
     public String getTitle() {
         return title;
+    }
+    public String[] getNestedTitles() {
+        return nestedTitles;
     }
 }

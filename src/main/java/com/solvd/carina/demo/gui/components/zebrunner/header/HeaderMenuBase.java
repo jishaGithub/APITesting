@@ -1,6 +1,5 @@
 package com.solvd.carina.demo.gui.components.zebrunner.header;
 
-import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;

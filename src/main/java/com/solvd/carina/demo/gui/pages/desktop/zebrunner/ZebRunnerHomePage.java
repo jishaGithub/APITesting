@@ -11,7 +11,6 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.List;
 import java.util.Random;
 
 public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
@@ -22,16 +21,8 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
     private NavigationMenu navigationMenu;
     @FindBy(xpath="//form[@class='md-search__form']")
     private SearchComponentMenu searchComponentMenu;
-    @FindBy(xpath = "//a[@class='md-header-nav__button md-logo']")
-    private ExtendedWebElement zebrunnerLogo;
-    @FindBy(xpath = "//div[@class='md-header-nav__ellipsis']/span[1]")
-    private ExtendedWebElement brandName;
-    @FindBy(className = "md-search__form")
-    private ExtendedWebElement searchElement;
     @FindBy(className = "md-footer-copyright__highlight")
     private ExtendedWebElement footerElement;
-    @FindBy(xpath = "//div[@class='md-header-nav__ellipsis']/span[1]")
-    private List<ExtendedWebElement> headerChildElements;
     @FindBy(xpath="//div[@class='md-content']/article/h1")
     private ExtendedWebElement mainBodyHeader;
 

@@ -1,7 +1,6 @@
 package com.solvd.carina.demo.gui.components.zebrunner.navigation;
 
 import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NavigationItem;
-import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NestedItem;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
@@ -14,6 +13,8 @@ import java.util.*;
 public class NavigationMenu extends NavigationMenuBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(NavigationMenu.class);
     private Map<String, ArrayList<String>> nestedMainMenuAndSubMenus = new  LinkedHashMap<>();
+    private List<String> nestedTopMenuTitle = Arrays.asList("Automation","Advanced","Integration");
+    //private List<String>
     @FindBy(xpath="//div[@class='md-sidebar__inner']/nav/ul/li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
     @FindBy(xpath = "//li/nav/ul/li[@class='md-nav__item md-nav__item--active']//a[@class='md-nav__link md-nav__link--active']")
@@ -34,7 +35,7 @@ public class NavigationMenu extends NavigationMenuBase {
     private ExtendedWebElement navigationNonNestedMenuItem;
     @FindBy(xpath = "//*[contains(text(), '%s')]")
     ExtendedWebElement navigationNestedMainItem;
-    @FindBy(xpath = "(//li/nav/ul/li/a[@title='%s'])[2]")
+    @FindBy(xpath = "//nav[@aria-label='Advanced']/ul/li/a[@title='%s']")
     ExtendedWebElement mobileElementInsideAdvancedMenu;
     @FindBy(xpath ="//li/nav/ul/li/a[@title='%s']")
     ExtendedWebElement elementOfNestedMenu;
@@ -97,70 +98,50 @@ public class NavigationMenu extends NavigationMenuBase {
         return true;
     }
 
-    private void addNestedMenuItems() {
-        nestedMainMenuAndSubMenus.put("Automation", new ArrayList<>());
-        for (NestedItem item : NestedItem.values()) {
-            if (item.ordinal() <= 3) {
-                nestedMainMenuAndSubMenus.get("Automation").add(item.getTitle());
-            }
-        }
-        nestedMainMenuAndSubMenus.put("Advanced", new ArrayList<>());
-        for (NestedItem item : NestedItem.values()) {
-            if (item.ordinal() >= 4 && item.ordinal() <= 12) {
-                nestedMainMenuAndSubMenus.get("Advanced").add(item.getTitle());
-            }
-        }
-        nestedMainMenuAndSubMenus.put("Integration", new ArrayList<>());
-        nestedMainMenuAndSubMenus.get("Integration").add(NestedItem.ZEBRUNNER.getTitle());
-    }
-
     @Override
     public boolean clickOnEachNavElement() {
-        addNestedMenuItems();
         boolean redirectionValidationResult;
         boolean validateClickedNavElementHighlightedResult;
-        System.out.println(NavigationItem.values());
-        for (NavigationItem item : NavigationItem.values()) {
-            navigationNonNestedMenuItem.format(item.getTitle());
-            navigationNonNestedMenuItem.click();
-            String mainPageHeader = mainBodyHeader.getText();
-            String navigationMenuTitle = navigationNonNestedMenuItem.getText();
-            redirectionValidationResult = validateRedirection(mainPageHeader, navigationMenuTitle);
-            validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationMenuTitle);
-            if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
-                return false;
-            }
-        }
-        return true;
-    }
 
-    @Override
-    public boolean clickOnEachNestedElement() {
-        ExtendedWebElement navigationNestedSubItem;
-        boolean redirectionValidationResult;
-        boolean validateClickedNavElementHighlightedResult;
-        Set<String> nestedMainMenuTitles = nestedMainMenuAndSubMenus.keySet();
-        for (String item : nestedMainMenuTitles) {
-            navigationNestedMainItem.format(item);
-            navigationNestedMainItem.click();
-            ArrayList<String> nestedSubMenuTitles = nestedMainMenuAndSubMenus.get(item);
-            for (String nestedItem : nestedSubMenuTitles ) {
-                if (Objects.equals(item, "Advanced") && Objects.equals(nestedItem, "Mobile")) {
-                    navigationNestedSubItem = mobileElementInsideAdvancedMenu.format(nestedItem);
-                } else {
-                    navigationNestedSubItem = elementOfNestedMenu.format(nestedItem);
-                }
-                navigationNestedSubItem.click();
+        for (NavigationItem item : NavigationItem.values()) {
+            if (item.getNestedTitles() == null) {
+                navigationNonNestedMenuItem.format(item.getTitle());
+                navigationNonNestedMenuItem.click();
+                LOGGER.info("{} is clicked",item.getTitle());
                 String mainPageHeader = mainBodyHeader.getText();
-                String navigationNestedMenuTitle = navigationNestedSubItem.getText();
-                if (Objects.equals(nestedItem, "Zebrunner")) {
-                    redirectionValidationResult = validateRedirection(mainPageHeader.substring(0,9),navigationNestedMenuTitle);
-                } else {
-                    redirectionValidationResult = validateRedirection(mainPageHeader, navigationNestedMenuTitle);
-                }
-                validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNestedNavElement, navigationNestedMenuTitle);
+                String navigationMenuTitle = navigationNonNestedMenuItem.getText();
+                redirectionValidationResult = validateRedirection(mainPageHeader, navigationMenuTitle);
+                validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationMenuTitle);
                 if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
                     return false;
+                }
+            } else {
+                ExtendedWebElement navigationNestedSubItem;
+                navigationNestedMainItem.format(item.getTitle());
+                navigationNestedMainItem.click();
+                LOGGER.info("{} is clicked",item.getTitle());
+                for (String nestedItem : item.getNestedTitles()) {
+                    if ("Advanced".equals(item.getTitle()) && "Mobile".equals(nestedItem)) {
+                        navigationNestedSubItem = mobileElementInsideAdvancedMenu.format(nestedItem);
+                    } else {
+                        navigationNestedSubItem = elementOfNestedMenu.format(nestedItem);
+                    }
+                    navigationNestedSubItem.click();
+                    LOGGER.info("{} is clicked",nestedItem);
+                    String mainPageHeader = mainBodyHeader.getText();
+                    String navigationNestedMenuTitle = navigationNestedSubItem.getText();
+                    if (nestedItem.equals("Zebrunner")) {
+                        redirectionValidationResult = validateRedirection(mainPageHeader.substring(0,9),navigationNestedMenuTitle);
+                        LOGGER.info("Redirection after clicking {} is successful", nestedItem);
+                    } else {
+                        redirectionValidationResult = validateRedirection(mainPageHeader, navigationNestedMenuTitle);
+                        LOGGER.info("Redirection after clicking {} is successful", nestedItem);
+                    }
+                    validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNestedNavElement, navigationNestedMenuTitle);
+                    LOGGER.info("{} is highlighted.", navigationNestedMenuTitle);
+                    if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
+                        return false;
+                    }
                 }
             }
         }
@@ -168,13 +149,10 @@ public class NavigationMenu extends NavigationMenuBase {
     }
 
     private boolean validateRedirection(String mainPageHeader, String navigationMenuTitle) {
-        LOGGER.info("Attempting to see if redirection works correctly");
         return mainPageHeader.equals(navigationMenuTitle);
     }
 
     private boolean validateClickedNavElementHighlighted(ExtendedWebElement highlightedNavItem, String navigationMenuTitle) {
-        LOGGER.info("Attempting to see if correct nav element is highlighted");
         return highlightedNavItem.getText().equals(navigationMenuTitle);
     }
-
 }
