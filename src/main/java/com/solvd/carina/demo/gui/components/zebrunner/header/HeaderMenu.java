@@ -7,19 +7,18 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.List;
 
 public class HeaderMenu extends AbstractUIObject {
     private static final Logger LOGGER = LoggerFactory.getLogger(HeaderMenu.class);
-    @FindBy(xpath = "//a[@class='md-header-nav__button md-logo']")
+    @FindBy(xpath = ".//a[@class='md-header-nav__button md-logo']")
     private ExtendedWebElement zebrunnerLogo;
-    @FindBy(xpath="//span[@class='md-header-nav__topic md-ellipsis'][1]")
+    @FindBy(xpath=".//span[@class='md-header-nav__topic md-ellipsis'][1]")
     private ExtendedWebElement carinaTextOnHeader;
-    @FindBy(xpath="//form[@class='md-search__form']")
+    @FindBy(xpath=".//form[@class='md-search__form']")
     private ExtendedWebElement searchComponentOnHeader;
-    @FindBy(xpath = "//div[@class='md-header-nav__source']/a[@class='md-source']")
+    @FindBy(xpath = ".//div[@class='md-header-nav__source']/a[@class='md-source']")
     private ExtendedWebElement gitHubLink;
-    @FindBy(xpath="//header")
+    @FindBy(xpath=".//header")
     private ExtendedWebElement header;
 
     public HeaderMenu(WebDriver driver, SearchContext searchContext) {
@@ -39,7 +38,6 @@ public class HeaderMenu extends AbstractUIObject {
         if (isZebRunnerLogoPresent) {
             int zebrunnerLogoXPosition = zebrunnerLogo.getLocation().getX();
             int carinaTextOnHeaderXPosition = carinaTextOnHeader.getLocation().getX();
-            System.out.println(zebrunnerLogoXPosition+"&&&&&"+carinaTextOnHeaderXPosition);
             return zebrunnerLogoXPosition <= carinaTextOnHeaderXPosition;
         }
         return false;
