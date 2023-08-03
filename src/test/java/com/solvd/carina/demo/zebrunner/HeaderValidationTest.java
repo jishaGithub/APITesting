@@ -31,7 +31,7 @@ public class HeaderValidationTest implements IAbstractTest {
         zebRunnerHomePage.assertPageOpened();
         zebRunnerHomePage.scrollToBottom();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderSticky(), "Header is not sticky");
+        Assert.assertEquals(zebRunnerHomePage.getHeader().getCssValueOfPosition(),"sticky","Header is not sticky");
         LOGGER.info("Validation Successful : Header is sticky");
     }
 

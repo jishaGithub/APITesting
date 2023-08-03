@@ -18,7 +18,7 @@ public class HeaderMenu extends AbstractUIObject {
     private ExtendedWebElement searchComponentOnHeader;
     @FindBy(xpath = ".//div[@class='md-header-nav__source']/a[@class='md-source']")
     private ExtendedWebElement gitHubLink;
-    @FindBy(xpath=".//header")
+    @FindBy(xpath="//header")
     private ExtendedWebElement header;
 
     public HeaderMenu(WebDriver driver, SearchContext searchContext) {
@@ -62,10 +62,9 @@ public class HeaderMenu extends AbstractUIObject {
         return searchComponentOnHeader.isPresent();
     }
 
-    public boolean isHeaderSticky() {
+    public String getCssValueOfPosition() {
         LOGGER.info("Attempting to see if header is still on the top (is sticky) when we scrolled to the bottom");
-        String cssValueOfPosition = header.getElement().getCssValue("position");
-        return cssValueOfPosition.equalsIgnoreCase("sticky");
+        return header.getElement().getCssValue("position");
     }
 
 }
