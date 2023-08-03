@@ -52,23 +52,11 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
     }
 
     @Override
-    public boolean scrollToBottom() {
+    public void scrollToBottom() {
         LOGGER.info("Attempting to scroll to the bottom of the home page");
-        int randomSelector = new Random().nextInt(2);
-        switch (randomSelector) {
-            case 0:
-                LOGGER.info("Scrolling using Actions Class");
-                Actions action = new Actions(getDriver());
-                action.moveToElement(footerElement.getElement()).perform();
-                return true;
-            case 1:
-                LOGGER.info("Scrolling using Javascript");
-                JavascriptExecutor javascriptExecutor = (JavascriptExecutor) driver;
-                javascriptExecutor.executeScript("window.scrollTo(0,document.body.scrollHeight)");
-                return true;
-        }
-        return false;
+        LOGGER.info("Scrolling using Actions Class");
+        Actions action = new Actions(getDriver());
+        action.moveToElement(footerElement.getElement()).perform();
     }
-
 
 }

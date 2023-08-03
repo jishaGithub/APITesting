@@ -64,7 +64,7 @@ public class ZebRunnerTest implements IAbstractTest {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
         Assert.assertTrue(zebRunnerHomePage.isPageOpened(), "Zebrunner home page is not open");
-        Assert.assertTrue(zebRunnerHomePage.scrollToBottom(), "Scrolling Unsuccessful");
+        zebRunnerHomePage.scrollToBottom();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderSticky(), "Header is not sticky");
         LOGGER.info("Validation Successful : Header is sticky");
