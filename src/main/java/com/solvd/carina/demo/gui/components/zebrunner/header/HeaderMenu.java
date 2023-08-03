@@ -43,9 +43,9 @@ public class HeaderMenu extends AbstractUIObject {
         return false;
     }
 
-    public boolean isCarinaBrandPresentOnHeader() {
+    public String getCarinaBrandOnHeader() {
         LOGGER.info("Attempting to see if Carina text is on the header");
-        return carinaTextOnHeader.getText().equals("Carina");
+        return carinaTextOnHeader.getText();
     }
 
     public boolean isGithubLinkIncludedOnHeader() {

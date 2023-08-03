@@ -54,7 +54,7 @@ public class HeaderValidationTest implements IAbstractTest {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
         zebRunnerHomePage.assertPageOpened();
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isCarinaBrandPresentOnHeader(), "Carina text not found on the header");
+        Assert.assertEquals(zebRunnerHomePage.getHeader().getCarinaBrandOnHeader(), "Carina","Carina text not found on the header");
         LOGGER.info("Validation Successful : Carina text found on the header");
     }
 }
