@@ -13,7 +13,7 @@ public class HeaderMenu extends AbstractUIObject {
     private static final Logger LOGGER = LoggerFactory.getLogger(HeaderMenu.class);
     @FindBy(xpath = "//a[@class='md-header-nav__button md-logo']")
     private ExtendedWebElement zebrunnerLogo;
-    @FindBy(xpath="//div[@class='md-header-nav__ellipsis']/span[1]")
+    @FindBy(xpath="//span[@class='md-header-nav__topic md-ellipsis'][1]")
     private ExtendedWebElement carinaTextOnHeader;
     @FindBy(xpath="//form[@class='md-search__form']")
     private ExtendedWebElement searchComponentOnHeader;
@@ -21,8 +21,6 @@ public class HeaderMenu extends AbstractUIObject {
     private ExtendedWebElement gitHubLink;
     @FindBy(xpath="//header")
     private ExtendedWebElement header;
-    @FindBy(xpath = "//div[@class='md-header-nav__ellipsis']/span[1]")
-    private List<ExtendedWebElement> headerChildElements;
 
     public HeaderMenu(WebDriver driver, SearchContext searchContext) {
         super(driver, searchContext);
@@ -39,9 +37,10 @@ public class HeaderMenu extends AbstractUIObject {
     public boolean isZebRunnerLogoOnLeftSideOfHeader() {
         boolean isZebRunnerLogoPresent = zebrunnerLogo.isPresent();
         if (isZebRunnerLogoPresent) {
-            int logoXPosition = zebrunnerLogo.getLocation().getX();
-            int firstChildElementLocation = headerChildElements.get(0).getLocation().getX();
-            return logoXPosition <= firstChildElementLocation;
+            int zebrunnerLogoXPosition = zebrunnerLogo.getLocation().getX();
+            int carinaTextOnHeaderXPosition = carinaTextOnHeader.getLocation().getX();
+            System.out.println(zebrunnerLogoXPosition+"&&&&&"+carinaTextOnHeaderXPosition);
+            return zebrunnerLogoXPosition <= carinaTextOnHeaderXPosition;
         }
         return false;
     }
