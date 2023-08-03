@@ -30,10 +30,12 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
         super(driver);
         setUiLoadedMarker(mainBodyHeader);
     }
+
     @Override
     public HeaderMenu getHeader() {
         return header;
     }
+
     @Override
     public NavigationMenu getNavigationMenu() {
         return navigationMenu;
