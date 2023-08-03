@@ -2,6 +2,7 @@ package com.solvd.carina.demo.gui.components.zebrunner.navigation;
 
 import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NavigationItem;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
+import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
@@ -9,7 +10,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import java.util.*;
 
-public class NavigationMenu extends NavigationMenuBase {
+public class NavigationMenu extends AbstractUIObject {
     private static final Logger LOGGER = LoggerFactory.getLogger(NavigationMenu.class);
     @FindBy(xpath="//li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
@@ -44,19 +45,16 @@ public class NavigationMenu extends NavigationMenuBase {
         super(driver, searchContext);
     }
 
-    @Override
     public boolean isNavigationMenuPresent() {
         LOGGER.info("Attempting to see Navigation Menu is present");
         return navigationMenu.isPresent();
     }
 
-    @Override
     public boolean isCarinaTheFirstElementInNavigationMenu() {
         LOGGER.info("Attempting to see if Carina text is in Navigation Menu");
         return firstChildElementInNavigationMenu.getText().equalsIgnoreCase("Carina");
     }
 
-    @Override
     public boolean isNavigationLinksListPresent() {
         LOGGER.info("Attempting to see Navigation Links are empty or not");
         int navigationLinksSize = navigationLinksList.size();
@@ -64,7 +62,6 @@ public class NavigationMenu extends NavigationMenuBase {
         return navigationLinksSize > 0;
     }
 
-    @Override
     public boolean isCurrentPageLinkHighlighted() {
         String currentActiveNavigationMenu = activeNavigationMenuItem.getText();
         LOGGER.info("Attempting to see if current page is highlighted");
@@ -76,7 +73,6 @@ public class NavigationMenu extends NavigationMenuBase {
         return false;
     }
 
-    @Override
     public boolean isHiddenElementsPresentInNavigationMenu() {
         LOGGER.info("Attempting to see if there are any hidden elements");
         int hiddenElementCount = 0;
@@ -89,7 +85,6 @@ public class NavigationMenu extends NavigationMenuBase {
         return hiddenElementCount  > 0;
     }
 
-    @Override
     public boolean isClickingOnParentNavRevealsSubPages() {
         LOGGER.info("Attempting to see if Clicking On ParentNav Reveals Nested SubPages");
         for (ExtendedWebElement nestedItems : nestedNavigationMenuItems) {
@@ -105,7 +100,6 @@ public class NavigationMenu extends NavigationMenuBase {
         return true;
     }
 
-    @Override
     public boolean clickToValidateRedirectionForEachNavigationMenuElement() {
         boolean redirectionValidationResult;
         boolean validateClickedNavElementHighlightedResult;
@@ -164,4 +158,5 @@ public class NavigationMenu extends NavigationMenuBase {
     private boolean validateClickedNavElementHighlighted(ExtendedWebElement highlightedNavItem, String navigationMenuTitle) {
         return highlightedNavItem.getText().equals(navigationMenuTitle);
     }
+
 }
