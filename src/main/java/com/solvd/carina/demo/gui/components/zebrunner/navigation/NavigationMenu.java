@@ -7,14 +7,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import java.util.*;
 
 public class NavigationMenu extends NavigationMenuBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(NavigationMenu.class);
-    @FindBy(xpath="//div[@class='md-sidebar__inner']/nav/ul/li[@class='md-nav__item md-nav__item--active']/a")
+    @FindBy(xpath="//li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
-    @FindBy(xpath = "//li/nav/ul/li[@class='md-nav__item md-nav__item--active']//a[@class='md-nav__link md-nav__link--active']")
+    @FindBy(xpath = "//a[@class='md-nav__link md-nav__link--active']")
     private ExtendedWebElement highlightedNestedNavElement;
     @FindBy(xpath="//li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement activeNavigationMenuItem;
@@ -60,13 +59,21 @@ public class NavigationMenu extends NavigationMenuBase {
     @Override
     public boolean isNavigationLinksListPresent() {
         LOGGER.info("Attempting to see Navigation Links are empty or not");
-        return navigationLinksList.size() > 0;
+        int navigationLinksSize = navigationLinksList.size();
+        LOGGER.info("The number of navigation links available: {}", navigationLinksSize);
+        return navigationLinksSize > 0;
     }
 
     @Override
     public boolean isCurrentPageLinkHighlighted() {
+        String currentActiveNavigationMenu = activeNavigationMenuItem.getText();
         LOGGER.info("Attempting to see if current page is highlighted");
-        return mainBodyHeader.getText().equals(activeNavigationMenuItem.getText());
+        boolean isCurrentPageHighlighted =  mainBodyHeader.getText().equals(currentActiveNavigationMenu);
+        if (isCurrentPageHighlighted) {
+            LOGGER.info("{} is highlighted", currentActiveNavigationMenu);
+            return true;
+        }
+        return false;
     }
 
     @Override
@@ -99,7 +106,7 @@ public class NavigationMenu extends NavigationMenuBase {
     }
 
     @Override
-    public boolean clickOnEachNavElement() {
+    public boolean clickToValidateRedirectionForEachNavigationMenuElement() {
         boolean redirectionValidationResult;
         boolean validateClickedNavElementHighlightedResult;
 
@@ -112,6 +119,8 @@ public class NavigationMenu extends NavigationMenuBase {
                 String navigationMenuTitle = navigationNonNestedMenuItem.getText();
                 redirectionValidationResult = validateRedirection(mainPageHeader, navigationMenuTitle);
                 validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationMenuTitle);
+                LOGGER.info("Redirection after clicking {} is successful", item);
+                LOGGER.info("{} is highlighted.", navigationMenuTitle);
                 if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
                     return false;
                 }
@@ -137,7 +146,7 @@ public class NavigationMenu extends NavigationMenuBase {
                         redirectionValidationResult = validateRedirection(mainPageHeader, navigationNestedMenuTitle);
                         LOGGER.info("Redirection after clicking {} is successful", nestedItem);
                     }
-                    validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNestedNavElement, navigationNestedMenuTitle);
+                    validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationNestedMenuTitle);
                     LOGGER.info("{} is highlighted.", navigationNestedMenuTitle);
                     if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
                         return false;

@@ -14,6 +14,6 @@ public abstract class NavigationMenuBase extends AbstractUIObject {
     public abstract boolean isCurrentPageLinkHighlighted();
     public abstract boolean isHiddenElementsPresentInNavigationMenu();
     public abstract boolean isClickingOnParentNavRevealsSubPages();
-    public abstract boolean clickOnEachNavElement();
+    public abstract boolean clickToValidateRedirectionForEachNavigationMenuElement();
 
 }
