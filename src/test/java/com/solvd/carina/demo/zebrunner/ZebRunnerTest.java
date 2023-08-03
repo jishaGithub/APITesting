@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import java.lang.invoke.MethodHandles;
 
 public class ZebRunnerTest implements IAbstractTest {
@@ -14,13 +16,13 @@ public class ZebRunnerTest implements IAbstractTest {
     public void headerValidation() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
-        Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
+        zebRunnerHomePage.assertPageOpened();
         LOGGER.info("Attempting to see if Zebrunner Logo is on the left side of the header");
         Assert.assertTrue(zebRunnerHomePage.getHeader().isZebRunnerLogoOnLeftSideOfHeader(),"Logo is not on the left side of the header");
         LOGGER.info("Validation Successful : Zebrunner Logo is on the left side of the header");
         LOGGER.info("Attempting to click on Zebrunner Logo");
         zebRunnerHomePage.getHeader().clickOnZebRunnerLogo();
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isClickingOnLogoRedirectsToOverviewPage(), "Clicking on ZebRunner Logo doesn't redirect to overview page");
+        Assert.assertEquals(getDriver().getCurrentUrl(), "https://zebrunner.github.io/carina/", "Clicking on ZebRunner Logo doesn't redirect to overview page");
         LOGGER.info("Validation Successful : Successfully redirected to overview page");
     }
 
@@ -28,7 +30,7 @@ public class ZebRunnerTest implements IAbstractTest {
     public void carinaBrandValidation() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
-        Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
+        zebRunnerHomePage.assertPageOpened();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isCarinaBrandPresentOnHeader(), "Carina text not found on the header");
         LOGGER.info("Validation Successful : Carina text found on the header");
     }
@@ -37,11 +39,13 @@ public class ZebRunnerTest implements IAbstractTest {
     public void validateSearchComponent() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
-        Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentOnHeader(), "Search component is missing");
-        Assert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isLogoAndInputFormWithPlaceholderPresentInSearchComponent(),"Search logo/input form not found");
+        zebRunnerHomePage.assertPageOpened();
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentOnHeader(), "Search component is missing");
+        softAssert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isLogoAndInputFormWithPlaceholderPresentInSearchComponent(),"Search logo/input form not found");
         LOGGER.info("Attempting to see if search component includes Icon and form with Search Text");
-        Assert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isSearchComponentMadeOfSearchIconAndInputForm(), "Search component is not made of icon and input with ‘Search’ text");
+        softAssert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isSearchComponentMadeOfSearchIconAndInputForm(), "Search component is not made of icon and input with ‘Search’ text");
+        softAssert.assertAll();
         LOGGER.info("Validation Successful : Validated search component");
     }
 
@@ -49,7 +53,7 @@ public class ZebRunnerTest implements IAbstractTest {
     public void validateGithub() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
-        Assert.assertTrue(zebRunnerHomePage.isPageOpened(),"Cannot open the web page");
+        zebRunnerHomePage.assertPageOpened();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isGithubLinkIncludedOnHeader(), "Couldn't find github link on header");
         zebRunnerHomePage.getHeader().clickOnGithubLinkOnHeader();
         String currentUrl = zebRunnerHomePage.getCurrentPageURL();
@@ -63,7 +67,7 @@ public class ZebRunnerTest implements IAbstractTest {
     public void validateHeaderIsSticky() {
         ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
-        Assert.assertTrue(zebRunnerHomePage.isPageOpened(), "Zebrunner home page is not open");
+        zebRunnerHomePage.assertPageOpened();
         zebRunnerHomePage.scrollToBottom();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderSticky(), "Header is not sticky");
@@ -71,10 +75,10 @@ public class ZebRunnerTest implements IAbstractTest {
     }
 
     @Test
-    public void validateNaviagtion() {
+    public void validateNavigation() {
         ZebRunnerHomePage homePage = new ZebRunnerHomePage(getDriver());
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Zebrunner home page is not open");
+        homePage.assertPageOpened();
         Assert.assertTrue(homePage.getNavigationMenu().isNavigationMenuPresent(),"Navigation Element is not present");
         Assert.assertTrue(homePage.getNavigationMenu().isCarinaTheFirstElementInNavigationMenu(), "Carina heading is not the first element of navigation menu");
         Assert.assertTrue(homePage.getNavigationMenu().isNavigationLinksListPresent(), "list of navigation links is not present");
@@ -86,17 +90,17 @@ public class ZebRunnerTest implements IAbstractTest {
     public void validateHiddenComponents() {
         ZebRunnerHomePage homePage = new ZebRunnerHomePage(getDriver());
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "Zebrunner home page is not open");
+        homePage.assertPageOpened();
         Assert.assertTrue(homePage.getNavigationMenu().isHiddenElementsPresentInNavigationMenu(),"There are no hidden components");
         Assert.assertTrue(homePage.getNavigationMenu().isClickingOnParentNavRevealsSubPages(), "Clicking on parent nav element doesn't reveal the links for sub-pages");
-        LOGGER.info("Validation Successful : Validated the presence of hidden elements in navigation menu");
+        LOGGER.info("Validation Successful : Validated the presence of hidden elements in navigation menu and all submenus are revealed");
     }
 
     @Test
     public void validateFullFunctionalityOfNavigationMenu() {
         ZebRunnerHomePage homePage = new ZebRunnerHomePage(getDriver());
         homePage.open();
-        Assert.assertTrue(homePage.isPageOpened(), "ZebRunner home page is not open");
+        homePage.assertPageOpened();
         Assert.assertTrue(homePage.getNavigationMenu().clickOnEachNavElement(), "Error validating the redirection in main menu");
         LOGGER.info("Validation Successful : Validated the all navigation menu elements");
     }

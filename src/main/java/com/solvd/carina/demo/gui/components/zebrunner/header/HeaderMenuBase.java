@@ -11,7 +11,6 @@ public abstract class HeaderMenuBase extends AbstractUIObject {
     public abstract void clickOnZebRunnerLogo();
     public abstract boolean isHeaderVisible();
     public abstract boolean isZebRunnerLogoOnLeftSideOfHeader();
-    public abstract boolean isClickingOnLogoRedirectsToOverviewPage();
     public abstract boolean isCarinaBrandPresentOnHeader();
     public abstract boolean isGithubLinkIncludedOnHeader();
     public abstract void clickOnGithubLinkOnHeader();

@@ -12,9 +12,6 @@ import java.util.*;
 
 public class NavigationMenu extends NavigationMenuBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(NavigationMenu.class);
-    private Map<String, ArrayList<String>> nestedMainMenuAndSubMenus = new  LinkedHashMap<>();
-    private List<String> nestedTopMenuTitle = Arrays.asList("Automation","Advanced","Integration");
-    //private List<String>
     @FindBy(xpath="//div[@class='md-sidebar__inner']/nav/ul/li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
     @FindBy(xpath = "//li/nav/ul/li[@class='md-nav__item md-nav__item--active']//a[@class='md-nav__link md-nav__link--active']")
@@ -25,7 +22,7 @@ public class NavigationMenu extends NavigationMenuBase {
     private List<ExtendedWebElement> navigationAllMenuItems;
     @FindBy(xpath = "//li[@class='md-nav__item md-nav__item--nested']")
     private List<ExtendedWebElement> nestedNavigationMenuItems;
-    @FindBy(xpath="//li[@class='md-nav__item md-nav__item--nested']/nav/ul[@class='md-nav__list']/li[@class='md-nav__item']/a")
+    @FindBy(xpath="//nav[@class='md-nav']/ul/li/a")
     private List<ExtendedWebElement> nestedSubPages;
     @FindBy(xpath="//nav[@class='md-nav md-nav--primary']")
     private ExtendedWebElement navigationMenu;
@@ -81,6 +78,7 @@ public class NavigationMenu extends NavigationMenuBase {
                 hiddenElementCount++;
             }
         }
+        LOGGER.info("{} hidden element(s) found",hiddenElementCount);
         return hiddenElementCount  > 0;
     }
 
@@ -92,8 +90,10 @@ public class NavigationMenu extends NavigationMenuBase {
         }
         for (ExtendedWebElement subPages : nestedSubPages) {
             if (!subPages.isVisible()) {
+                LOGGER.info("{} sub page is not revealed", subPages.getText());
                 return false;
             }
+            LOGGER.info("{} sub page is revealed", subPages.getText());
         }
         return true;
     }

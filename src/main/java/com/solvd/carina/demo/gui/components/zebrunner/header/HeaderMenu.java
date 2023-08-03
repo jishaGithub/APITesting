@@ -49,11 +49,6 @@ public class HeaderMenu extends HeaderMenuBase {
         }
         return false;
     }
-    @Override
-    public boolean isClickingOnLogoRedirectsToOverviewPage() {
-        LOGGER.info("Attempting to see when Zebrunner Logo is clicked, does it redirect to overview page");
-        return mainBodyHeader.getText().equals("Overview");
-    }
 
     @Override
     public boolean isCarinaBrandPresentOnHeader() {
