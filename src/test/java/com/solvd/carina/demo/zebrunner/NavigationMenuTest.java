@@ -25,8 +25,8 @@ public class NavigationMenuTest implements IAbstractTest {
 
     @Test
     public void validateHiddenComponentsInNavigationMenu() {
-        Assert.assertTrue(zebRunnerHomePage.getNavigationMenu().isHiddenElementsPresentInNavigationMenu(),"There are no hidden components");
-        Assert.assertTrue(zebRunnerHomePage.getNavigationMenu().isClickingOnParentNavRevealsSubPages(), "Clicking on parent nav element doesn't reveal the links for sub-pages");
+        Assert.assertTrue(zebRunnerHomePage.getNavigationMenu().getHiddenElementsPresentInNavigationMenu() > 0, "There are no hidden components");
+        Assert.assertTrue(zebRunnerHomePage.getNavigationMenu().getNestedSubMenu().isVisible(), "Clicking on parent nav element doesn't reveal the links for sub-pages");
     }
 
     @Test

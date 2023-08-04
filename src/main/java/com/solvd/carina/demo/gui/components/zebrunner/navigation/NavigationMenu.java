@@ -71,7 +71,7 @@ public class NavigationMenu extends AbstractUIObject {
         return false;
     }
 
-    public boolean isHiddenElementsPresentInNavigationMenu() {
+    public int getHiddenElementsPresentInNavigationMenu() {
         LOGGER.info("Attempting to see if there are any hidden elements");
         int hiddenElementCount = 0;
         for (ExtendedWebElement navMenuItem : navigationAllMenuItems) {
@@ -80,22 +80,18 @@ public class NavigationMenu extends AbstractUIObject {
             }
         }
         LOGGER.info("{} hidden element(s) found", hiddenElementCount);
-        return hiddenElementCount > 0;
+        return hiddenElementCount;
     }
 
-    public boolean isClickingOnParentNavRevealsSubPages() {
-        LOGGER.info("Attempting to see if Clicking On ParentNav Reveals Nested SubPages");
+    public ExtendedWebElement getNestedSubMenu() {
+        LOGGER.info("Attempting to see if Clicking On ParentNav Reveals Nested Sub Menus");
         for (ExtendedWebElement nestedItems : nestedNavigationMenuItems) {
             nestedItems.click();
         }
         for (ExtendedWebElement subPages : nestedSubPages) {
-            if (!subPages.isVisible()) {
-                LOGGER.info("{} sub page is not revealed", subPages.getText());
-                return false;
-            }
-            LOGGER.info("{} sub page is revealed", subPages.getText());
+            return subPages;
         }
-        return true;
+        return null;
     }
 
     private void clickMainElement(NavigationElementsEnum navigationElement) {
