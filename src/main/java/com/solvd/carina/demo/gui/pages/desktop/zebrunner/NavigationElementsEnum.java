@@ -1,6 +1,6 @@
 package com.solvd.carina.demo.gui.pages.desktop.zebrunner;
 
-public enum NavigationItem {
+public enum NavigationElementsEnum {
     OVERVIEW("Overview", null),
     GETTING_STARTED("Getting started", null),
     PROJECT_STRUCTURE("Project structure", null),
@@ -25,7 +25,7 @@ public enum NavigationItem {
     private final String title;
     private final String[] nestedTitles;
 
-    NavigationItem(String title, String[] nestedTitles) {
+    NavigationElementsEnum(String title, String[] nestedTitles) {
         this.title = title;
         this.nestedTitles = nestedTitles;
     }

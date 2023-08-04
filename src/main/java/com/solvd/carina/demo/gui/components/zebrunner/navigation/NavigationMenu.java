@@ -1,6 +1,6 @@
 package com.solvd.carina.demo.gui.components.zebrunner.navigation;
 
-import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NavigationItem;
+import com.solvd.carina.demo.gui.pages.desktop.zebrunner.NavigationElementsEnum;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
 import com.zebrunner.carina.webdriver.gui.AbstractUIObject;
 import org.openqa.selenium.SearchContext;
@@ -12,31 +12,29 @@ import java.util.*;
 
 public class NavigationMenu extends AbstractUIObject {
     private static final Logger LOGGER = LoggerFactory.getLogger(NavigationMenu.class);
-    @FindBy(xpath="//li[@class='md-nav__item md-nav__item--active']/a")
+    @FindBy(xpath = "//li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement highlightedNavElement;
-    @FindBy(xpath = "//a[@class='md-nav__link md-nav__link--active']")
-    private ExtendedWebElement highlightedNestedNavElement;
-    @FindBy(xpath="//li[@class='md-nav__item md-nav__item--active']/a")
+    @FindBy(xpath = "//li[@class='md-nav__item md-nav__item--active']/a")
     private ExtendedWebElement activeNavigationMenuItem;
     @FindBy(xpath = "//nav[@class='md-nav md-nav--primary']/*")
     private List<ExtendedWebElement> navigationAllMenuItems;
     @FindBy(xpath = "//li[@class='md-nav__item md-nav__item--nested']")
     private List<ExtendedWebElement> nestedNavigationMenuItems;
-    @FindBy(xpath="//nav[@class='md-nav']/ul/li/a")
+    @FindBy(xpath = "//nav[@class='md-nav']/ul/li/a")
     private List<ExtendedWebElement> nestedSubPages;
-    @FindBy(xpath="//nav[@class='md-nav md-nav--primary']")
+    @FindBy(xpath = "//nav[@class='md-nav md-nav--primary']")
     private ExtendedWebElement navigationMenu;
     @FindBy(xpath = "//nav[@class='md-nav md-nav--primary']/*[1]")
     private ExtendedWebElement firstChildElementInNavigationMenu;
     @FindBy(xpath = "//div[@class='md-sidebar__inner']/nav/ul/li/a[@title='%s']")
     private ExtendedWebElement navigationNonNestedMenuItem;
     @FindBy(xpath = "//*[contains(text(), '%s')]")
-    ExtendedWebElement navigationNestedMainItem;
+    private ExtendedWebElement navigationNestedMainItem;
     @FindBy(xpath = "//nav[@aria-label='Advanced']/ul/li/a[@title='%s']")
-    ExtendedWebElement mobileElementInsideAdvancedMenu;
-    @FindBy(xpath ="//li/nav/ul/li/a[@title='%s']")
-    ExtendedWebElement elementOfNestedMenu;
-    @FindBy(xpath="//div[@class='md-content']/article/h1")
+    private ExtendedWebElement mobileElementInsideAdvancedMenu;
+    @FindBy(xpath = "//li/nav/ul/li/a[@title='%s']")
+    private ExtendedWebElement elementOfNestedMenu;
+    @FindBy(xpath = "//div[@class='md-content']/article/h1")
     private ExtendedWebElement mainBodyHeader;
     @FindBy(className = "md-nav__link")
     private List<ExtendedWebElement> navigationLinksList;
@@ -65,7 +63,7 @@ public class NavigationMenu extends AbstractUIObject {
     public boolean isCurrentPageLinkHighlighted() {
         String currentActiveNavigationMenu = activeNavigationMenuItem.getText();
         LOGGER.info("Attempting to see if current page is highlighted");
-        boolean isCurrentPageHighlighted =  mainBodyHeader.getText().equals(currentActiveNavigationMenu);
+        boolean isCurrentPageHighlighted = mainBodyHeader.getText().equals(currentActiveNavigationMenu);
         if (isCurrentPageHighlighted) {
             LOGGER.info("{} is highlighted", currentActiveNavigationMenu);
             return true;
@@ -81,8 +79,8 @@ public class NavigationMenu extends AbstractUIObject {
                 hiddenElementCount++;
             }
         }
-        LOGGER.info("{} hidden element(s) found",hiddenElementCount);
-        return hiddenElementCount  > 0;
+        LOGGER.info("{} hidden element(s) found", hiddenElementCount);
+        return hiddenElementCount > 0;
     }
 
     public boolean isClickingOnParentNavRevealsSubPages() {
@@ -100,49 +98,68 @@ public class NavigationMenu extends AbstractUIObject {
         return true;
     }
 
-    public boolean clickToValidateRedirectionForEachNavigationMenuElement() {
-        boolean redirectionValidationResult;
-        boolean validateClickedNavElementHighlightedResult;
+    private void clickMainElement(NavigationElementsEnum navigationElement) {
+        navigationNonNestedMenuItem.format(navigationElement.getTitle());
+        navigationNonNestedMenuItem.click();
+        LOGGER.info("{} is clicked", navigationElement.getTitle());
+    }
 
-        for (NavigationItem item : NavigationItem.values()) {
+    private void clickNestedElement(String mainTitle, String nestedTitle) {
+        ExtendedWebElement navigationNestedSubItem;
+        if (mainTitle.equals("Advanced") && nestedTitle.equals("Mobile")) {
+            navigationNestedSubItem = mobileElementInsideAdvancedMenu.format(nestedTitle);
+        } else {
+            navigationNestedSubItem = elementOfNestedMenu.format(nestedTitle);
+        }
+        navigationNestedSubItem.click();
+        LOGGER.info("{} is clicked", nestedTitle);
+    }
+
+    public boolean isRedirectionSuccessful() {
+        boolean redirectionSuccessful;
+        for (NavigationElementsEnum item : NavigationElementsEnum.values()) {
             if (item.getNestedTitles() == null) {
-                navigationNonNestedMenuItem.format(item.getTitle());
-                navigationNonNestedMenuItem.click();
-                LOGGER.info("{} is clicked",item.getTitle());
-                String mainPageHeader = mainBodyHeader.getText();
-                String navigationMenuTitle = navigationNonNestedMenuItem.getText();
-                redirectionValidationResult = validateRedirection(mainPageHeader, navigationMenuTitle);
-                validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationMenuTitle);
-                LOGGER.info("Redirection after clicking {} is successful", item);
-                LOGGER.info("{} is highlighted.", navigationMenuTitle);
-                if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
+                clickMainElement(item);
+                String currentPageRealURL = getDriver().getCurrentUrl();
+                String expectedURL = constructExpectedUrlOfNonNestedItems(item.getTitle());
+                redirectionSuccessful = currentPageRealURL.equals(expectedURL);
+                if (!redirectionSuccessful) {
+                    return false;
+                }
+                LOGGER.info("Redirection after clicking {} is successful", item.getTitle());
+            } else {
+                navigationNestedMainItem.format(item.getTitle()).click();
+                for (String nestedItem : item.getNestedTitles()) {
+                    clickNestedElement(item.getTitle(), nestedItem);
+                    String currentPageRealURL = getDriver().getCurrentUrl();
+                    String expectedURL = constructExpectedUrlOfNestedItems(item.getTitle(), nestedItem);
+                    redirectionSuccessful = currentPageRealURL.equals(expectedURL);
+                    if (!redirectionSuccessful) {
+                        return false;
+                    }
+                    LOGGER.info("Redirection after clicking {} is successful", nestedItem);
+                }
+            }
+        }
+        return true;
+    }
+
+    public boolean isProperNavigationElementGettingHighlighted() {
+        boolean validateClickedNavElementHighlightedResult;
+        for (NavigationElementsEnum item : NavigationElementsEnum.values()) {
+            if (item.getNestedTitles() == null) {
+                clickMainElement(item);
+                validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, item.getTitle());     LOGGER.info("{} is highlighted.", item.getTitle());
+                if (!validateClickedNavElementHighlightedResult) {
                     return false;
                 }
             } else {
-                ExtendedWebElement navigationNestedSubItem;
-                navigationNestedMainItem.format(item.getTitle());
-                navigationNestedMainItem.click();
-                LOGGER.info("{} is clicked",item.getTitle());
+                navigationNestedMainItem.format(item.getTitle()).click();
                 for (String nestedItem : item.getNestedTitles()) {
-                    if ("Advanced".equals(item.getTitle()) && "Mobile".equals(nestedItem)) {
-                        navigationNestedSubItem = mobileElementInsideAdvancedMenu.format(nestedItem);
-                    } else {
-                        navigationNestedSubItem = elementOfNestedMenu.format(nestedItem);
-                    }
-                    navigationNestedSubItem.click();
-                    LOGGER.info("{} is clicked",nestedItem);
-                    String mainPageHeader = mainBodyHeader.getText();
-                    String navigationNestedMenuTitle = navigationNestedSubItem.getText();
-                    if (nestedItem.equals("Zebrunner")) {
-                        redirectionValidationResult = validateRedirection(mainPageHeader.substring(0,9),navigationNestedMenuTitle);
-                        LOGGER.info("Redirection after clicking {} is successful", nestedItem);
-                    } else {
-                        redirectionValidationResult = validateRedirection(mainPageHeader, navigationNestedMenuTitle);
-                        LOGGER.info("Redirection after clicking {} is successful", nestedItem);
-                    }
-                    validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, navigationNestedMenuTitle);
-                    LOGGER.info("{} is highlighted.", navigationNestedMenuTitle);
-                    if (!redirectionValidationResult  || !validateClickedNavElementHighlightedResult) {
+                    clickNestedElement(item.getTitle(), nestedItem);
+                    validateClickedNavElementHighlightedResult = validateClickedNavElementHighlighted(highlightedNavElement, nestedItem);
+                    LOGGER.info("{} is highlighted.", nestedItem);
+                    if (!validateClickedNavElementHighlightedResult) {
                         return false;
                     }
                 }
@@ -151,8 +168,27 @@ public class NavigationMenu extends AbstractUIObject {
         return true;
     }
 
-    private boolean validateRedirection(String mainPageHeader, String navigationMenuTitle) {
-        return mainPageHeader.equals(navigationMenuTitle);
+    private String constructExpectedUrlOfNonNestedItems(String pageTitle) {
+        String mainPageURL = "https://zebrunner.github.io/carina/";
+        if (pageTitle.equals("Overview")) {
+            return mainPageURL;
+        } else if (pageTitle.equals("Migration Guide")) {
+            return mainPageURL + pageTitle.split(" ")[0].toLowerCase() + "/";
+        }
+        else {
+            if (pageTitle.split(" ").length > 1) {
+                pageTitle = pageTitle.replaceAll(" ", "_").toLowerCase();
+            }
+            return mainPageURL + pageTitle.toLowerCase() + "/";
+        }
+    }
+
+    private String constructExpectedUrlOfNestedItems(String mainMenuTitle, String nestedMenuTitle) {
+        String mainPageURL = "https://zebrunner.github.io/carina/";
+        if (nestedMenuTitle.split(" ").length > 1) {
+            nestedMenuTitle = nestedMenuTitle.replaceAll(" ", "_").toLowerCase();
+        }
+        return mainPageURL + mainMenuTitle.toLowerCase() + "/" + nestedMenuTitle.toLowerCase() + "/";
     }
 
     private boolean validateClickedNavElementHighlighted(ExtendedWebElement highlightedNavItem, String navigationMenuTitle) {

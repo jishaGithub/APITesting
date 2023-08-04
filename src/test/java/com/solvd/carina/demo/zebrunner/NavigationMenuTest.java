@@ -37,7 +37,8 @@ public class NavigationMenuTest implements IAbstractTest {
         ZebRunnerHomePage homePage = new ZebRunnerHomePage(getDriver());
         homePage.open();
         homePage.assertPageOpened();
-        Assert.assertTrue(homePage.getNavigationMenu().clickToValidateRedirectionForEachNavigationMenuElement(), "Error validating the redirection in navigation menu");
-        LOGGER.info("Validation Successful : Validated the all navigation menu elements");
+        Assert.assertTrue(homePage.getNavigationMenu().isRedirectionSuccessful(), "Redirection unsuccessful.");
+        Assert.assertTrue(homePage.getNavigationMenu().isProperNavigationElementGettingHighlighted(), "Proper navigation menu item is not getting highlighted");
     }
+
 }
