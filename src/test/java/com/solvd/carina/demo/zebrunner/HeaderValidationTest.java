@@ -43,7 +43,7 @@ public class HeaderValidationTest implements IAbstractTest {
     public void validateGithubLinkOnHeader() {
         Assert.assertTrue(zebRunnerHomePage.getHeader().isGithubLinkIncludedOnHeader(), "Couldn't find github link on header");
         zebRunnerHomePage.getHeader().clickOnGithubLinkOnHeader();
-        String currentUrl = zebRunnerHomePage.getCurrentPageURL();
+        String currentUrl = getDriver().getCurrentUrl();
         String expectedCarinaGithubUrl = "https://github.com/zebrunner/carina/";
         LOGGER.info("Attempting to see if github link is redirecting to carina github project");
         Assert.assertEquals(expectedCarinaGithubUrl, currentUrl, "Link didn't redirect to carina github project");
