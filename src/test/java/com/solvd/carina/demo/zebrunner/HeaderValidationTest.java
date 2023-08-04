@@ -26,7 +26,6 @@ public class HeaderValidationTest implements IAbstractTest {
         LOGGER.info("Attempting to click on Zebrunner Logo");
         zebRunnerHomePage.getHeader().clickOnZebRunnerLogo();
         Assert.assertEquals(getDriver().getCurrentUrl(), "https://zebrunner.github.io/carina/", "Clicking on ZebRunner Logo doesn't redirect to overview page");
-        LOGGER.info("Validation Successful : Successfully redirected to overview page");
     }
 
     @Test
@@ -34,7 +33,6 @@ public class HeaderValidationTest implements IAbstractTest {
         zebRunnerHomePage.scrollToBottom();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
         Assert.assertEquals(zebRunnerHomePage.getHeader().getCssValueOfPosition(),"sticky","Header is not sticky");
-        LOGGER.info("Validation Successful : Header is sticky");
     }
 
     @Test
@@ -45,12 +43,10 @@ public class HeaderValidationTest implements IAbstractTest {
         String expectedCarinaGithubUrl = "https://github.com/zebrunner/carina/";
         LOGGER.info("Attempting to see if github link is redirecting to carina github project");
         Assert.assertEquals(expectedCarinaGithubUrl, currentUrl, "Link didn't redirect to carina github project");
-        LOGGER.info("Validation Successful : Validated Github Link");
     }
 
     @Test
     public void carinaBrandValidationOnHeader() {
         Assert.assertEquals(zebRunnerHomePage.getHeader().getCarinaBrandOnHeader(), "Carina","Carina text not found on the header");
-        LOGGER.info("Validation Successful : Carina text found on the header");
     }
 }
