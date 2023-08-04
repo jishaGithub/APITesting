@@ -5,13 +5,11 @@ import com.solvd.carina.demo.gui.components.zebrunner.navigation.NavigationMenu;
 import com.solvd.carina.demo.gui.components.zebrunner.search.SearchComponentMenu;
 import com.solvd.carina.demo.gui.pages.common.ZebRunnerHomePageBase;
 import com.zebrunner.carina.webdriver.decorator.ExtendedWebElement;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.FindBy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import java.util.Random;
 
 public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(ZebRunnerHomePage.class);
@@ -44,11 +42,6 @@ public class ZebRunnerHomePage extends ZebRunnerHomePageBase {
     @Override
     public SearchComponentMenu getSearchComponentMenu() {
         return searchComponentMenu;
-    }
-
-    @Override
-    public String getCurrentPageURL() {
-        return getDriver().getCurrentUrl();
     }
 
     @Override
