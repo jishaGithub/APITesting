@@ -20,11 +20,13 @@ public class SearchComponentMenu extends AbstractUIObject {
     public boolean isSearchComponentMadeOfSearchIconAndInputForm() {
         boolean isSearchIconPresent = searchIcon.isElementPresent();
         boolean isSearchInputFormPresent = searchInputForm.isElementPresent();
-        boolean isPlaceholderTextPresentInInputForm = searchInputFormText.isElementPresent();
-        return isSearchIconPresent && isSearchInputFormPresent && isPlaceholderTextPresentInInputForm;
+        return isSearchIconPresent && isSearchInputFormPresent;
+    }
+    public boolean isPlaceholderPresentInInputForm() {
+        return searchInputFormText.isElementPresent();
     }
 
-    public String getSearchInputFormHasPlaceholderAttribute() {
+    public String getInputFormPlaceHolder() {
         return searchInputFormText.getAttribute("placeholder");
     }
 

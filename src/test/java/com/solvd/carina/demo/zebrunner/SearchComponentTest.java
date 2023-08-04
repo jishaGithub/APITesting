@@ -14,7 +14,8 @@ public class SearchComponentTest implements IAbstractTest {
         SoftAssert softAssert = new SoftAssert();
         softAssert.assertTrue(zebRunnerHomePage.getHeader().isSearchComponentOnHeader(), "Search component is missing");
         softAssert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isSearchComponentMadeOfSearchIconAndInputForm(),"Search component's logo/input form not found");
-        softAssert.assertEquals(zebRunnerHomePage.getSearchComponentMenu().getSearchInputFormHasPlaceholderAttribute(), "Search", "The placeholder for the input form is not search");
+        softAssert.assertTrue(zebRunnerHomePage.getSearchComponentMenu().isPlaceholderPresentInInputForm(), "Placeholder is not present in search input form");
+        softAssert.assertEquals(zebRunnerHomePage.getSearchComponentMenu().getInputFormPlaceHolder(), "Search", "The placeholder for the input form is not search");
         softAssert.assertAll();
     }
 
