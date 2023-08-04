@@ -7,6 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
+
 import java.lang.invoke.MethodHandles;
 
 public class HeaderValidationTest implements IAbstractTest {
@@ -31,8 +33,10 @@ public class HeaderValidationTest implements IAbstractTest {
     @Test
     public void validateHeaderIsSticky() {
         zebRunnerHomePage.scrollToBottom();
-        Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
-        Assert.assertEquals(zebRunnerHomePage.getHeader().getCssValueOfPosition(),"sticky","Header is not sticky");
+        SoftAssert softAssert = new SoftAssert();
+        softAssert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
+        softAssert.assertEquals(zebRunnerHomePage.getHeader().getCssValueOfPosition(),"sticky","Header is not sticky");
+        softAssert.assertAll();
     }
 
     @Test
