@@ -5,16 +5,21 @@ import com.zebrunner.carina.core.IAbstractTest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import java.lang.invoke.MethodHandles;
 
 public class HeaderValidationTest implements IAbstractTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(MethodHandles.lookup().lookupClass());
-    @Test
-    public void headerValidation() {
-        ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
+    private ZebRunnerHomePage zebRunnerHomePage;
+    @BeforeMethod
+    public void setUpTest() {
+        zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
         zebRunnerHomePage.open();
         zebRunnerHomePage.assertPageOpened();
+    }
+    @Test
+    public void headerValidation() {
         LOGGER.info("Attempting to see if Zebrunner Logo is on the left side of the header");
         Assert.assertTrue(zebRunnerHomePage.getHeader().isZebRunnerLogoOnLeftSideOfHeader(),"Logo is not on the left side of the header");
         LOGGER.info("Validation Successful : Zebrunner Logo is on the left side of the header");
@@ -26,9 +31,6 @@ public class HeaderValidationTest implements IAbstractTest {
 
     @Test
     public void validateHeaderIsSticky() {
-        ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
-        zebRunnerHomePage.open();
-        zebRunnerHomePage.assertPageOpened();
         zebRunnerHomePage.scrollToBottom();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isHeaderVisible(), "Header is not visible from bottom");
         Assert.assertEquals(zebRunnerHomePage.getHeader().getCssValueOfPosition(),"sticky","Header is not sticky");
@@ -37,9 +39,6 @@ public class HeaderValidationTest implements IAbstractTest {
 
     @Test
     public void validateGithubLinkOnHeader() {
-        ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
-        zebRunnerHomePage.open();
-        zebRunnerHomePage.assertPageOpened();
         Assert.assertTrue(zebRunnerHomePage.getHeader().isGithubLinkIncludedOnHeader(), "Couldn't find github link on header");
         zebRunnerHomePage.getHeader().clickOnGithubLinkOnHeader();
         String currentUrl = zebRunnerHomePage.getCurrentPageURL();
@@ -51,9 +50,6 @@ public class HeaderValidationTest implements IAbstractTest {
 
     @Test
     public void carinaBrandValidationOnHeader() {
-        ZebRunnerHomePage zebRunnerHomePage = new ZebRunnerHomePage(getDriver());
-        zebRunnerHomePage.open();
-        zebRunnerHomePage.assertPageOpened();
         Assert.assertEquals(zebRunnerHomePage.getHeader().getCarinaBrandOnHeader(), "Carina","Carina text not found on the header");
         LOGGER.info("Validation Successful : Carina text found on the header");
     }
