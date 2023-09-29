@@ -1,0 +1,236 @@
+
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "total": {
+      "type": "integer"
+    },
+    "total_pages": {
+      "type": "integer"
+    },
+    "results": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "slug": {
+              "type": "string"
+            },
+            "created_at": {
+              "type": "string"
+            },
+            "updated_at": {
+              "type": "string"
+            },
+            "promoted_at": {
+              "type": "null"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "color": {
+              "type": "string"
+            },
+            "blur_hash": {
+              "type": "string"
+            },
+            "description": {
+              "type": "string"
+            },
+            "alt_description": {
+              "type": "string"
+            },
+            "likes": {
+              "type": "integer"
+            },
+            "liked_by_user": {
+              "type": "boolean"
+            },
+            "user": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "updated_at": {
+                  "type": "string"
+                },
+                "username": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "first_name": {
+                  "type": "string"
+                },
+                "last_name": {
+                  "type": "string"
+                },
+                "twitter_username": {
+                  "type": "null"
+                },
+                "portfolio_url": {
+                  "type": "string"
+                },
+                "bio": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "null"
+                },
+                "links": {
+                  "type": "object",
+                  "properties": {
+                    "self": {
+                      "type": "string"
+                    },
+                    "html": {
+                      "type": "string"
+                    },
+                    "photos": {
+                      "type": "string"
+                    },
+                    "likes": {
+                      "type": "string"
+                    },
+                    "portfolio": {
+                      "type": "string"
+                    },
+                    "following": {
+                      "type": "string"
+                    },
+                    "followers": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "self",
+                    "html",
+                    "photos",
+                    "likes",
+                    "portfolio",
+                    "following",
+                    "followers"
+                  ]
+                },
+                "profile_image": {
+                  "type": "object",
+                  "properties": {
+                    "small": {
+                      "type": "string"
+                    },
+                    "medium": {
+                      "type": "string"
+                    },
+                    "large": {
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "small",
+                    "medium",
+                    "large"
+                  ]
+                },
+                "instagram_username": {
+                  "type": "null"
+                },
+                "total_collections": {
+                  "type": "integer"
+                },
+                "total_likes": {
+                  "type": "integer"
+                },
+                "total_photos": {
+                  "type": "integer"
+                },
+                "accepted_tos": {
+                  "type": "boolean"
+                },
+                "for_hire": {
+                  "type": "boolean"
+                },
+                "social": {
+                  "type": "object",
+                  "properties": {
+                    "instagram_username": {
+                      "type": "null"
+                    },
+                    "portfolio_url": {
+                      "type": "string"
+                    },
+                    "twitter_username": {
+                      "type": "null"
+                    },
+                    "paypal_email": {
+                      "type": "null"
+                    }
+                  },
+                  "required": [
+                    "instagram_username",
+                    "portfolio_url",
+                    "twitter_username",
+                    "paypal_email"
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "updated_at",
+                "username",
+                "name",
+                "first_name",
+                "last_name",
+                "twitter_username",
+                "portfolio_url",
+                "bio",
+                "location",
+                "links",
+                "profile_image",
+                "instagram_username",
+                "total_collections",
+                "total_likes",
+                "total_photos",
+                "accepted_tos",
+                "for_hire",
+                "social"
+              ]
+            }
+          },
+          "required": [
+            "id",
+            "slug",
+            "created_at",
+            "updated_at",
+            "promoted_at",
+            "width",
+            "height",
+            "color",
+            "blur_hash",
+            "description",
+            "alt_description",
+            "likes",
+            "liked_by_user",
+            "user"
+          ]
+        }
+      ]
+    }
+  },
+  "required": [
+    "total",
+    "total_pages",
+    "results"
+  ]
+}
+
